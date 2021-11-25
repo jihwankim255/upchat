@@ -12,7 +12,7 @@
         android:layout_height="250dp"
         android:elevation="30dp"
         diagonal:diagonal_angle="10"
-?
+??
         diagonal:diagonal_position="left"
         diagonal:layout_constraintEnd_toEndOf="parent"
         diagonal:layout_constraintHorizontal_bias="0.5"
