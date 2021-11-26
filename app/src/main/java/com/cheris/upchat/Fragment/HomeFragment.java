@@ -1,14 +1,13 @@
 package com.cheris.upchat.Fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.cheris.upchat.Adapter.DashboardAdapter;
 import com.cheris.upchat.Adapter.StoryAdapter;
@@ -65,7 +64,6 @@ public class HomeFragment extends Fragment {
 
         dashboardList = new ArrayList<>();
         dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","464","12","15"));
-
         dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","464","12","15"));
         dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","4264","112","415"));
         dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","44","2","5"));

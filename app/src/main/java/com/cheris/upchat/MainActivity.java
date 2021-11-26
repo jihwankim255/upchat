@@ -1,7 +1,8 @@
 package com.cheris.upchat;
 
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setSupportActionBar(binding.toolbar);
+        MainActivity.this.setTitle("My Profile");
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        binding.toolbar.setVisibility(View.GONE);
         transaction.replace(R.id.container, new HomeFragment());
         transaction.commit();
 
@@ -36,22 +41,27 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (i) {
                     case 0:
+                        binding.toolbar.setVisibility(View.GONE);
                         transaction.replace(R.id.container, new HomeFragment());
                         break;
 
                     case 1:
+                        binding.toolbar.setVisibility(View.GONE);
                         transaction.replace(R.id.container, new NotificationFragment());
                         break;
 
                     case 2:
+                        binding.toolbar.setVisibility(View.GONE);
                         transaction.replace(R.id.container, new AddFragment());
                         break;
 
                     case 3:
+                        binding.toolbar.setVisibility(View.GONE);
                         transaction.replace(R.id.container, new SearchFragment());
                         break;
 
                     case 4:
+                        binding.toolbar.setVisibility(View.VISIBLE);
                         transaction.replace(R.id.container, new ProfileFragment());
                         break;
                 }
@@ -60,5 +70,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item,menu);
+        return true;
     }
 }

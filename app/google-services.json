@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "214959524978",
+    "project_id": "upchat-a0789",
+    "storage_bucket": "upchat-a0789.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214959524978:android:bcd8ddde7e7ee8250d06eb",
+        "android_client_info": {
+          "package_name": "com.cheris.upchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214959524978-s0p0bbio9a89nvdpt0ovgjo7j1v6pibo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9cozTJGWJAIg1-1GmpwBDizAfnNYpWck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214959524978-s0p0bbio9a89nvdpt0ovgjo7j1v6pibo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
