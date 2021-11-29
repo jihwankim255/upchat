@@ -2,6 +2,7 @@ package com.cheris.upchat;
 
 public class User {
     private String name, profession, email, password;
+    private String coverPhoto;
 
     public User(String name, String profession, String email, String password) {
         this.name = name;
@@ -40,5 +41,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(String coverPhoto) {
+        this.coverPhoto = coverPhoto;
     }
 }

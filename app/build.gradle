@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
 }
 
 android {
@@ -62,6 +61,13 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
     implementation 'com.google.firebase:firebase-auth'
-
+// Declare the dependency for the Realtime Database library
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-core:9.6.1'
+// Firebase Cloud Storage
+    implementation 'com.google.firebase:firebase-storage'
+// Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 }
+apply plugin: 'com.google.gms.google-services'

@@ -5,48 +5,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     tools:context=".Fragment.ProfileFragment">
 
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <com.github.florent37.diagonallayout.DiagonalLayout
+        android:id="@+id/diagonalLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="@dimen/_230mdp"
+        android:elevation="0dp"
+        diagonal:diagonal_angle="10"
+        diagonal:diagonal_direction="left"
+        diagonal:diagonal_position="bottom"
+        diagonal:layout_constraintEnd_toEndOf="parent"
+        diagonal:layout_constraintStart_toStartOf="parent"
+        diagonal:layout_constraintTop_toTopOf="parent">
 
-        <com.github.florent37.diagonallayout.DiagonalLayout
-            android:id="@+id/diagonalLayout"
+        <ImageView
+            android:id="@+id/coverPhoto"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_230mdp"
-            android:elevation="30dp"
-            app:diagonal_direction="left"
-            diagonal:diagonal_angle="10"
-            diagonal:diagonal_position="bottom"
-            diagonal:layout_constraintEnd_toEndOf="parent"
-            diagonal:layout_constraintHorizontal_bias="0.5"
-            diagonal:layout_constraintStart_toStartOf="parent"
-            diagonal:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cover" />
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:src="@drawable/cover" />
-
-            <View
-                android:id="@+id/view6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/greyTrans" />
+        <View
+            android:id="@+id/view6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/greyTrans" />
 
 
-        </com.github.florent37.diagonallayout.DiagonalLayout>
-    </LinearLayout>
+    </com.github.florent37.diagonallayout.DiagonalLayout>
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
@@ -56,11 +47,21 @@
         android:src="@drawable/original"
         app:civ_border_color="@color/white"
         app:civ_border_width="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/diagonalLayout"
+        app:layout_constraintEnd_toEndOf="@+id/diagonalLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/diagonalLayout"
         app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/changeCoverPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_image"
+        app:layout_constraintBottom_toBottomOf="@+id/diagonalLayout"
+        app:layout_constraintStart_toStartOf="@id/diagonalLayout" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -84,7 +85,7 @@
         android:textSize="@dimen/_14font_mdp"
         app:layout_constraintEnd_toEndOf="@+id/profile_image"
         app:layout_constraintStart_toStartOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/diagonalLayout" />
 
     <TextView
         android:id="@+id/textView5"
