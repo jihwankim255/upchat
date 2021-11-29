@@ -145,7 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:hint="Passwordl"
+            android:hint="Password"
             android:paddingBottom="5dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
