@@ -59,11 +59,12 @@ dependencies {
 // DiagonalLayout
     implementation 'com.github.florent37:diagonallayout:1.0.9'
 
-    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
     implementation 'com.google.firebase:firebase-auth'
 // Declare the dependency for the Realtime Database library
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-core:9.6.1'
+
 // Firebase Cloud Storage
     implementation 'com.google.firebase:firebase-storage'
 // Picasso

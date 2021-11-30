@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cheris.upchat.Adapter.FriendAdapter;
 import com.cheris.upchat.Model.FriendModel;
 import com.cheris.upchat.R;
-import com.cheris.upchat.User;
+import com.cheris.upchat.Model.User;
 import com.cheris.upchat.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +42,7 @@ public class ProfileFragment extends Fragment {
     FirebaseAuth auth;
     FirebaseStorage storage;
     FirebaseDatabase database;
+    int request_code;
 
     ActivityResultLauncher<String> galleryLauncher;
 
@@ -80,8 +81,12 @@ public class ProfileFragment extends Fragment {
                             .load(user.getCoverPhoto())
                             .placeholder(R.drawable.placeholder)
                             .into(binding.coverPhoto);
-
-                    binding.
+                    Picasso.get()
+                            .load(user.getProfile())
+                            .placeholder(R.drawable.placeholder)
+                            .into(binding.profileImage);
+                    binding.userName.setText(user.getName());
+                    binding.profession.setText(user.getProfession());
                 }
             }
 
@@ -104,40 +109,70 @@ public class ProfileFragment extends Fragment {
         binding.friendRV.setLayoutManager(layoutManager);
         binding.friendRV.setAdapter(adapter);
 //        recyclerView.setLayoutManager(linearLayoutManag
-
         galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri uri) {
-                if (uri != null) {
-                    binding.coverPhoto.setImageURI(uri);
+                if (request_code == 11){
+                    if (uri != null) {
+                        binding.coverPhoto.setImageURI(uri);
 
-                    final StorageReference reference = storage.getReference().child("cover_photo").child(FirebaseAuth.getInstance().getUid());
-                    reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(getContext(), "Cover photo saved", Toast.LENGTH_SHORT).show();
-                            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    database.getReference().child("Users").child(auth.getUid()).child("coverPhoto").setValue(uri.toString());
-                                }
-                            });
-                        }
-                    });
+                        final StorageReference reference = storage.getReference().child("cover_photo").child(FirebaseAuth.getInstance().getUid());
+                        reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(getContext(), "Cover photo saved", Toast.LENGTH_SHORT).show();
+                                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        database.getReference().child("Users").child(auth.getUid()).child("coverPhoto").setValue(uri.toString());
+                                    }
+                                });
+                            }
+                        });
+                    }
+                } else if (request_code == 22){
+                    if (uri != null) {
+                        binding.profileImage.setImageURI(uri);
+
+                        final StorageReference reference = storage.getReference().child("profile_image").child(FirebaseAuth.getInstance().getUid());
+                        reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(getContext(), "Profile photo saved", Toast.LENGTH_SHORT).show();
+                                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        database.getReference().child("Users").child(auth.getUid()).child("profile").setValue(uri.toString());
+                                    }
+                                });
+                            }
+                        });
+                    }
+
                 }
+
             }
         });
 
         binding.changeCoverPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                request_code = 11;
                 galleryLauncher.launch("image/*");
+
 
 //                Intent intent = new Intent();
 //                intent.setAction(Intent.ACTION_GET_CONTENT);
 //                intent.setType("image/*");
 //                startActivityForResult(intent, 11);
 
+            }
+        });
+        binding.verifiedAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                request_code = 22;
+                galleryLauncher.launch("image/*");
             }
         });
 

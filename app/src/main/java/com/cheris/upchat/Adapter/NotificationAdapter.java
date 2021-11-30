@@ -58,7 +58,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         TextView notification, time;
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            profile = itemView.findViewById(R.id.profile_image);
+            profile = itemView.findViewById(R.id.profileImage);
             notification = itemView.findViewById(R.id.notification);
             time = itemView.findViewById(R.id.time);
         }

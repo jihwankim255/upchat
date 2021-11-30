@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="205dp"
-        android:layout_height="224dp"
+        android:layout_height="204dp"
         app:layout_constraintBottom_toTopOf="@+id/textView14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
