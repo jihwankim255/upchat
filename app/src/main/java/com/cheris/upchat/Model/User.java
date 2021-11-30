@@ -1,8 +1,22 @@
-package com.cheris.upchat;
+package com.cheris.upchat.Model;
 
 public class User {
     private String name, profession, email, password;
     private String coverPhoto;
+    private String userID;
+    private String profile;
+
+    public User() {
+
+    }
+
+    public String getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(String coverPhoto) {
+        this.coverPhoto = coverPhoto;
+    }
 
     public User(String name, String profession, String email, String password) {
         this.name = name;
@@ -43,11 +57,19 @@ public class User {
         this.password = password;
     }
 
-    public String getCoverPhoto() {
-        return coverPhoto;
+    public String getProfile() {
+        return profile;
     }
 
-    public void setCoverPhoto(String coverPhoto) {
-        this.coverPhoto = coverPhoto;
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
+        android:id="@+id/profileImage"
         android:layout_width="@dimen/_40mdp"
         android:layout_height="@dimen/_40mdp"
         android:layout_marginTop="8dp"
@@ -18,10 +18,10 @@
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintEnd_toEndOf="@id/profile_image"
-        app:layout_constraintStart_toStartOf="@id/profile_image"
-        app:layout_constraintTop_toTopOf="@id/profile_image" />
+        app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+        app:layout_constraintEnd_toEndOf="@id/profileImage"
+        app:layout_constraintStart_toStartOf="@id/profileImage"
+        app:layout_constraintTop_toTopOf="@id/profileImage" />
 
     <TextView
         android:id="@+id/userName"
@@ -32,9 +32,9 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"
+        app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+        app:layout_constraintStart_toEndOf="@+id/profileImage"
+        app:layout_constraintTop_toTopOf="@+id/profileImage"
         app:layout_constraintVertical_bias="0.16000003" />
 
     <TextView
@@ -50,9 +50,9 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintBottom_toBottomOf="@+id/profileImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"
+        app:layout_constraintTop_toTopOf="@+id/profileImage"
         app:srcCompat="@drawable/ic_more" />
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/profileImage"
         app:riv_corner_radius="10dip"
         app:riv_mutate_background="true" />
 
@@ -93,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/postImg" />
 
     <TextView
-        android:id="@+id/comment"
+        android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -115,7 +115,7 @@
         android:drawablePadding="10dp"
         android:gravity="center"
         android:text="54"
-        app:layout_constraintStart_toEndOf="@id/comment"
+        app:layout_constraintStart_toEndOf="@id/message"
         app:layout_constraintTop_toBottomOf="@+id/postImg" />
 
 
