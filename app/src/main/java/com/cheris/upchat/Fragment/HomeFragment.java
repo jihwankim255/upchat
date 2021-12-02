@@ -5,15 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cheris.upchat.Adapter.DashboardAdapter;
+import com.cheris.upchat.Adapter.PostAdapter;
 import com.cheris.upchat.Adapter.StoryAdapter;
-import com.cheris.upchat.Model.DashboardModel;
+import com.cheris.upchat.Model.Post;
 import com.cheris.upchat.Model.StoryModel;
 import com.cheris.upchat.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -22,7 +29,10 @@ public class HomeFragment extends Fragment {
 
     RecyclerView storyRv, dashboardRV;
     ArrayList<StoryModel> list;
-    ArrayList<DashboardModel> dashboardList;
+    ArrayList<Post> postList;
+//    ImageView addstory;
+    FirebaseDatabase database;
+    FirebaseAuth auth;
 
 
     public HomeFragment() {
@@ -42,9 +52,11 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
 
+        database = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
 
+        // Story Recycler View
         storyRv = view.findViewById(R.id.storyRV);
-
         list = new ArrayList<>();
         list.add(new StoryModel(R.drawable.dennis,R.drawable.ic_video_camera,R.drawable.deaf,"Darshi"));
         list.add(new StoryModel(R.drawable.dennis,R.drawable.ic_video_camera,R.drawable.deaf,"Darshi"));
@@ -60,21 +72,40 @@ public class HomeFragment extends Fragment {
         storyRv.setNestedScrollingEnabled(false);
         storyRv.setAdapter(adapter);
 
+
+        // Dashboard Recycler View
         dashboardRV = view.findViewById(R.id.dashboardRv);
+        postList = new ArrayList<>();
 
-        dashboardList = new ArrayList<>();
-        dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","464","12","15"));
-        dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","464","12","15"));
-        dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","4264","112","415"));
-        dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","44","2","5"));
-        dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","44","127","115"));
-        dashboardList.add(new DashboardModel(R.drawable.profile,R.drawable.new_hope,R.drawable.saved,"Denis kane","Travler","4644","1","55"));
-
-        DashboardAdapter dashboardAdapter = new DashboardAdapter(dashboardList,getContext());
+        PostAdapter postAdapter = new PostAdapter(postList,getContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         dashboardRV.setLayoutManager(layoutManager);
+        dashboardRV.addItemDecoration(new DividerItemDecoration(dashboardRV.getContext(),DividerItemDecoration.HORIZONTAL));
         dashboardRV.setNestedScrollingEnabled(false);
-        dashboardRV.setAdapter(dashboardAdapter);
+        dashboardRV.setAdapter(postAdapter);
+
+
+        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                postList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Post post = dataSnapshot.getValue(Post.class);
+                    post.setPostId(dataSnapshot.getKey());
+                    postList.add(post);
+                }
+                postAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+//        addStory = view.findViewById(R.id.addS)
+
+
         return view;
     }
 }

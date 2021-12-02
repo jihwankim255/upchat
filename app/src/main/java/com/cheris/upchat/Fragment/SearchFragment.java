@@ -52,13 +52,19 @@ public class SearchFragment extends Fragment {
         binding.usersRV.setLayoutManager(layoutManager);
         binding.usersRV.setAdapter(adapter);
 
+        // Search 목록을 뿌려주는 부분
         database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     User user = dataSnapshot.getValue(User.class);
                     user.setUserID(dataSnapshot.getKey());
-                    list.add(user);
+                    // 현재유저를 Search목록에서 제거
+                    if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())){
+                        list.add(user);
+
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }

@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.cheris.upchat.Adapter.FriendAdapter;
-import com.cheris.upchat.Model.FriendModel;
-import com.cheris.upchat.R;
+import com.cheris.upchat.Adapter.FollowersAdapter;
+import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.User;
+import com.cheris.upchat.R;
 import com.cheris.upchat.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +37,7 @@ public class ProfileFragment extends Fragment {
 
 
 //    RecyclerView recyclerView;
-    ArrayList<FriendModel> list;
+    ArrayList<Follow> list;
     FragmentProfileBinding binding;
     FirebaseAuth auth;
     FirebaseStorage storage;
@@ -72,6 +72,16 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 //        recyclerView = view.findViewById(R.id.friendRV);
 
+        list = new ArrayList<>();
+//
+//        list.add(new Follow(R.drawable.profile));
+
+        FollowersAdapter adapter = new FollowersAdapter(list,getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
+        binding.friendRV.setLayoutManager(layoutManager);
+        binding.friendRV.setAdapter(adapter);
+
+        // 데이터불러오기 아랫부분이랑 비슷해서 헷갈림 주의
         database.getReference().child("Users").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -87,6 +97,7 @@ public class ProfileFragment extends Fragment {
                             .into(binding.profileImage);
                     binding.userName.setText(user.getName());
                     binding.profession.setText(user.getProfession());
+                    binding.followers.setText(user.getFollowerCount()+"");
                 }
             }
 
@@ -96,18 +107,25 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        list = new ArrayList<>();
+        database.getReference().child("Users")
+                .child(auth.getUid())
+                .child("followers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Follow follow = dataSnapshot.getValue(Follow.class);
+                    list.add(follow);
+                }
+                adapter.notifyDataSetChanged();
+            }
 
-        list.add(new FriendModel(R.drawable.profile));
-        list.add(new FriendModel(R.drawable.profile));
-        list.add(new FriendModel(R.drawable.cover));
-        list.add(new FriendModel(R.drawable.profile));
-        list.add(new FriendModel(R.drawable.profile1));
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        FriendAdapter adapter = new FriendAdapter(list,getContext());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-        binding.friendRV.setLayoutManager(layoutManager);
-        binding.friendRV.setAdapter(adapter);
+            }
+        });
+        //Fetch User data from database
 //        recyclerView.setLayoutManager(linearLayoutManag
         galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override

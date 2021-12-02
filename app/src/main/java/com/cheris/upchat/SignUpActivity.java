@@ -37,7 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String email = binding.emailET.getText().toString(), password = binding.passwordET.getText().toString();
                 auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull Task<AuthResult>    task) {
                         if (task.isSuccessful()) {
                             User user = new User(binding.nameET.getText().toString(),binding.professionET.getText().toString(),email, password);
                             String id = task.getResult().getUser().getUid();
