@@ -13,7 +13,7 @@
     <com.github.florent37.diagonallayout.DiagonalLayout
         android:id="@+id/diagonalLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_230mdp"
+        android:layout_height="@dimen/_200mdp"
         android:elevation="0dp"
         diagonal:diagonal_angle="10"
         diagonal:diagonal_direction="left"
@@ -134,7 +134,7 @@
         app:layout_constraintTop_toTopOf="@+id/callView" />
 
     <ImageView
-        android:id="@+id/message"
+        android:id="@+id/comment"
         android:layout_width="@dimen/_17mdp"
         android:layout_height="@dimen/_17mdp"
         android:src="@drawable/ic_comment"
@@ -202,7 +202,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4685"
@@ -292,7 +292,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="tium lectus quam id leo. Eu ultrices vitae auctor eu. Tempor orci eu lobortis elementum nibh tellus molestie nunc non. Tempus quam pellentesque nec nam aliquam sem. Iaculis eu non diam phasellus vestibulum lorem sed. Et pharetra pharetra massa massa."
+        android:text="ti Tempus quam pellentelis eu non diam phasellus vestibulum lorem sed. Et pharetra pharetra massa massa."
         android:textSize="@dimen/_14font_mdp"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"

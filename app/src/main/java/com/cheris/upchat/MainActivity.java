@@ -1,23 +1,28 @@
 package com.cheris.upchat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.cheris.upchat.Fragment.AddFragment;
+import com.cheris.upchat.Fragment.AddPostFragment;
 import com.cheris.upchat.Fragment.HomeFragment;
 import com.cheris.upchat.Fragment.NotificationFragment;
 import com.cheris.upchat.Fragment.ProfileFragment;
 import com.cheris.upchat.Fragment.SearchFragment;
 import com.cheris.upchat.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.iammert.library.readablebottombar.ReadableBottomBar;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case 2:
                         binding.toolbar.setVisibility(View.GONE);
-                        transaction.replace(R.id.container, new AddFragment());
+                        transaction.replace(R.id.container, new AddPostFragment());
                         break;
 
                     case 3:
@@ -76,5 +81,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item,menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.setting:
+                auth.signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
