@@ -55,7 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder>{
 
         // followed되고 다른화면 갔다왔는데 다시 follow로 바뀐것을 막기위해 미리 follow 목록을 확인시킨다
         FirebaseDatabase.getInstance().getReference()
-                .child("users")
+                .child("Users")
                 .child(user.getUserID())
                 .child("followers")
                 .child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

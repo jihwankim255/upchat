@@ -70,5 +70,9 @@ dependencies {
 // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+// TimeAgo
+    implementation 'com.github.marlonlom:timeago:4.0.3'
+
+
 }
 apply plugin: 'com.google.gms.google-services'
