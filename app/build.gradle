@@ -63,7 +63,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
 // Declare the dependency for the Realtime Database library
     implementation 'com.google.firebase:firebase-database'
-    implementation 'com.google.firebase:firebase-core:9.6.1'
+    implementation 'com.google.firebase:firebase-core:20.0.0'
 
 // Firebase Cloud Storage
     implementation 'com.google.firebase:firebase-storage'
@@ -72,6 +72,17 @@ dependencies {
 
 // TimeAgo
     implementation 'com.github.marlonlom:timeago:4.0.3'
+
+// CircularStatusView
+    implementation 'com.github.3llomi:CircularStatusView:V1.0.2'
+
+// StoryView
+    implementation 'com.github.OMARIHAMZA:StoryView:1.0.2-alpha'
+
+// Shimmer
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+//8:34:15
+
 
 
 }

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/story"
+        android:id="@+id/storyImg"
         android:layout_width="@dimen/_130mdp"
         android:layout_height="@dimen/_85mdp"
         android:layout_marginEnd="16dp"
@@ -27,17 +27,21 @@
         android:layout_marginTop="4dp"
         android:padding="4dp"
         android:src="@drawable/original"
-        app:layout_constraintStart_toStartOf="@+id/story"
+        app:layout_constraintStart_toStartOf="@+id/storyImg"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/view"
+    <com.devlomi.circularstatusview.CircularStatusView
+        android:id="@+id/statusCircle"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/profileImage"
         app:layout_constraintEnd_toEndOf="@id/profileImage"
         app:layout_constraintStart_toStartOf="@id/profileImage"
-        app:layout_constraintTop_toTopOf="@id/profileImage" />
+        app:layout_constraintTop_toTopOf="@id/profileImage"
+        app:portion_color="@color/design_default_color_primary"
+        app:portion_spacing="5dp"
+        app:portion_width="2dp"
+        app:portions_count="10"/>
 
     <ImageView
         android:id="@+id/storyType"
@@ -45,8 +49,8 @@
         android:layout_height="20dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/story"
-        app:layout_constraintTop_toTopOf="@+id/story"
+        app:layout_constraintEnd_toEndOf="@+id/storyImg"
+        app:layout_constraintTop_toTopOf="@+id/storyImg"
         app:srcCompat="@drawable/ic_live" />
 
     <TextView
@@ -58,7 +62,7 @@
         android:text="M. Amin"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/story"
-        app:layout_constraintStart_toStartOf="@+id/story" />
+        app:layout_constraintBottom_toBottomOf="@+id/storyImg"
+        app:layout_constraintStart_toStartOf="@+id/storyImg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

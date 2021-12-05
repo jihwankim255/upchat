@@ -82,14 +82,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder>{
                                     .child(FirebaseAuth.getInstance().getUid())
                                     .setValue(follow).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(Void unused) {
+                                public void onSuccess(Void aVoid) {
                                     FirebaseDatabase.getInstance().getReference()
                                             .child("Users")
                                             .child(user.getUserID())
                                             .child("followerCount")
                                             .setValue(user.getFollowerCount() + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
-                                        public void onSuccess(Void unused) {
+                                        public void onSuccess(Void aVoid) {
                                             holder.binding.followBtn.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.follow_active_btn));
                                             holder.binding.followBtn.setText("Following");
                                             holder.binding.followBtn.setTextColor(context.getResources().getColor(R.color.grey));
