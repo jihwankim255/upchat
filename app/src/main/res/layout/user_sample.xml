@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileImage"
+        android:id="@+id/notificationProfile"
         android:layout_width="@dimen/_60mdp"
         android:layout_height="@dimen/_60mdp"
         android:layout_marginStart="8dp"
@@ -24,10 +24,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/circle"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
-        app:layout_constraintEnd_toEndOf="@id/profileImage"
-        app:layout_constraintStart_toStartOf="@id/profileImage"
-        app:layout_constraintTop_toTopOf="@id/profileImage"/>
+        app:layout_constraintBottom_toBottomOf="@id/notificationProfile"
+        app:layout_constraintEnd_toEndOf="@id/notificationProfile"
+        app:layout_constraintStart_toStartOf="@id/notificationProfile"
+        app:layout_constraintTop_toTopOf="@id/notificationProfile"/>
 
 
     <TextView
@@ -39,8 +39,8 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_14font_mdp"
         diagonal:layout_constraintBottom_toTopOf="@+id/profession"
-        diagonal:layout_constraintStart_toEndOf="@+id/profileImage"
-        diagonal:layout_constraintTop_toTopOf="@+id/profileImage"
+        diagonal:layout_constraintStart_toEndOf="@+id/notificationProfile"
+        diagonal:layout_constraintTop_toTopOf="@+id/notificationProfile"
         diagonal:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        diagonal:layout_constraintBottom_toBottomOf="@+id/profileImage"
+        diagonal:layout_constraintBottom_toBottomOf="@+id/notificationProfile"
         diagonal:layout_constraintStart_toStartOf="@+id/name"
         diagonal:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -62,8 +62,8 @@
         android:paddingEnd="10dp"
         android:text="Follow"
         android:textColor="@color/white"
-        diagonal:layout_constraintBottom_toBottomOf="@+id/profileImage"
+        diagonal:layout_constraintBottom_toBottomOf="@+id/notificationProfile"
         diagonal:layout_constraintEnd_toEndOf="parent"
-        diagonal:layout_constraintTop_toTopOf="@+id/profileImage" />
+        diagonal:layout_constraintTop_toTopOf="@+id/notificationProfile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

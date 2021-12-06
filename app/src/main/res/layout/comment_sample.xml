@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileImage"
+        android:id="@+id/notificationProfile"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
@@ -23,10 +23,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/circle"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
-        app:layout_constraintEnd_toEndOf="@id/profileImage"
-        app:layout_constraintStart_toStartOf="@id/profileImage"
-        app:layout_constraintTop_toTopOf="@id/profileImage" />
+        app:layout_constraintBottom_toBottomOf="@id/notificationProfile"
+        app:layout_constraintEnd_toEndOf="@id/notificationProfile"
+        app:layout_constraintStart_toStartOf="@id/notificationProfile"
+        app:layout_constraintTop_toTopOf="@id/notificationProfile" />
 
 
     <TextView
@@ -38,8 +38,8 @@
         android:text="TextView"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toTopOf="@+id/profileImage" />
+        app:layout_constraintStart_toEndOf="@+id/notificationProfile"
+        app:layout_constraintTop_toTopOf="@+id/notificationProfile" />
 
     <TextView
         android:id="@+id/time"

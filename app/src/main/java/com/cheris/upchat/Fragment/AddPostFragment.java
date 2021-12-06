@@ -81,7 +81,7 @@ public class AddPostFragment extends Fragment {
                     Picasso.get()
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
-                            .into(binding.profileImage);
+                            .into(binding.notificationProfile);
                     binding.name.setText(user.getName());
                     binding.profession.setText(user.getProfession());
                 }

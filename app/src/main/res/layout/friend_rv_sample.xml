@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileImage"
+        android:id="@+id/notificationProfile"
         android:layout_width="@dimen/_55mdp"
         android:layout_height="@dimen/_55mdp"
         android:layout_marginEnd="8dp"
