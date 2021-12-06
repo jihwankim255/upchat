@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cheris.upchat.Model.Follow;
+import com.cheris.upchat.Model.Notification;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
 import com.cheris.upchat.databinding.UserSampleBinding;
@@ -49,7 +50,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder>{
         Picasso.get()
                 .load(user.getProfile())
                 .placeholder(R.drawable.placeholder)
-                .into(holder.binding.profileImage);
+                .into(holder.binding.notificationProfile);
         holder.binding.name.setText(user.getName());
         holder.binding.profession.setText(user.getProfession());
 
@@ -96,6 +97,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder>{
                                             holder.binding.followBtn.setEnabled(false);
 
                                             Toast.makeText(context, "You Followed " + user.getName(), Toast.LENGTH_SHORT).show();
+
+                                            Notification notification = new Notification();
+                                            notification.setNotificationBy(FirebaseAuth.getInstance().getUid());
+                                            notification.setNotificationAt(new Date().getTime());
+                                            notification.setType("follow");
+
+                                            FirebaseDatabase.getInstance().getReference()
+                                                    .child("notification")
+                                                    .child(user.getUserID())
+                                                    .push()
+                                                    .setValue(notification);
                                         }
                                     });
                                 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cheris.upchat.Adapter.CommentAdapter;
 import com.cheris.upchat.Model.Comment;
+import com.cheris.upchat.Model.Notification;
 import com.cheris.upchat.Model.Post;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.databinding.ActivityCommentBinding;
@@ -83,7 +84,7 @@ public class CommentActivity extends AppCompatActivity {
                 Picasso.get()
                         .load(user.getProfile())
                         .placeholder(R.drawable.placeholder)
-                        .into(binding.profileImage);
+                        .into(binding.notificationProfile); // 왜이러는지모름
                 binding.name.setText(user.getName());
 
             }
@@ -130,6 +131,19 @@ public class CommentActivity extends AppCompatActivity {
                                     public void onSuccess(Void unused) {
                                         binding.commentET.setText("");
                                         Toast.makeText(CommentActivity.this, "Commented", Toast.LENGTH_SHORT).show();
+
+                                        Notification notification = new Notification();
+                                        notification.setNotificationBy(FirebaseAuth.getInstance().getUid());
+                                        notification.setNotificationAt(new Date().getTime());
+                                        notification.setPostID(postId);
+                                        notification.setPostedBy(postedBy);
+                                        notification.setType("comment");
+
+                                        FirebaseDatabase.getInstance().getReference()
+                                                .child("notification")
+                                                .child(postedBy)
+                                                .push()
+                                                .setValue(notification);
                                     }
                                 });
                             }

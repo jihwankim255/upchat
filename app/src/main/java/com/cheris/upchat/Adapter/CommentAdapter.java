@@ -56,7 +56,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.viewHold
                 User user = snapshot.getValue(User.class);
                 Picasso.get()
                         .load(user.getProfile())
-                        .into(holder.binding.profileImage);
+                        .into(holder.binding.notificationProfile); // 맞음
                 holder.binding.comment.setText(Html.fromHtml("<b>"+user.getName() + "</b>   " + comment.getCommentBody()));
             }
 

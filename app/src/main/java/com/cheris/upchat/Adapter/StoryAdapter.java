@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,7 +64,7 @@ public class StoryAdapter extends  RecyclerView.Adapter<StoryAdapter.viewHolder>
                     Picasso.get()
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
-                            .into(holder.binding.profileImage);
+                            .into(holder.binding.notificationProfile);
                     holder.binding.name.setText(user.getName());
 
                     holder.binding.storyImg.setOnClickListener(new View.OnClickListener() {

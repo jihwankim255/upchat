@@ -40,7 +40,7 @@ import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
-    RecyclerView storyRv;
+    RecyclerView storyRV;
     ShimmerRecyclerView dashboardRV;
     ArrayList<Story> storyList;
     ArrayList<Post> postList;
@@ -86,28 +86,17 @@ public class HomeFragment extends Fragment {
         dialog.setCancelable(false);
 
         // Story Recycler View
-        storyRv = view.findViewById(R.id.storyRV);
+        storyRV = view.findViewById(R.id.storyRV);
         storyList = new ArrayList<>();
 
 //        list.add(new Story(R.drawable.dennis,R.drawable.ic_video_camera,R.drawable.deaf,"Darshi"));
 
         StoryAdapter adapter = new StoryAdapter(storyList,getContext());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        storyRv.setLayoutManager(linearLayoutManager);;
-        storyRv.setNestedScrollingEnabled(false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        storyRV.setLayoutManager(layoutManager);;
+        storyRV.setNestedScrollingEnabled(false);
+        storyRV.setAdapter(adapter);
 
-
-
-        // Dashboard Recycler View
-
-        postList = new ArrayList<>();
-
-        PostAdapter postAdapter = new PostAdapter(postList,getContext());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        dashboardRV.setLayoutManager(layoutManager);
-        dashboardRV.addItemDecoration(new DividerItemDecoration(dashboardRV.getContext(),DividerItemDecoration.HORIZONTAL));
-        dashboardRV.setNestedScrollingEnabled(false);
-        dashboardRV.setAdapter(postAdapter);
 
         database.getReference()
                 .child("stories").addValueEventListener(new ValueEventListener() {
@@ -137,6 +126,16 @@ public class HomeFragment extends Fragment {
 
             }
         });
+                // Dashboard Recycler View
+
+        postList = new ArrayList<>();
+
+
+        PostAdapter postAdapter = new PostAdapter(postList,getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        dashboardRV.setLayoutManager(linearLayoutManager);
+        dashboardRV.addItemDecoration(new DividerItemDecoration(dashboardRV.getContext(),DividerItemDecoration.HORIZONTAL));
+        dashboardRV.setNestedScrollingEnabled(false);
 
 
         database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
@@ -148,7 +147,7 @@ public class HomeFragment extends Fragment {
                     post.setPostId(dataSnapshot.getKey());
                     postList.add(post);
                 }
-                storyRv.setAdapter(adapter);
+                dashboardRV.setAdapter(postAdapter);
                 dashboardRV.hideShimmerAdapter();
                 postAdapter.notifyDataSetChanged();
             }

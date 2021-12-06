@@ -81,8 +81,6 @@ dependencies {
 
 // Shimmer
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
-//8:34:15
-
 
 
 }
