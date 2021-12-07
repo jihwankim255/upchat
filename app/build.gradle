@@ -5,6 +5,11 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\user\\keystores\\android_keystore.jks')
+        }
+    }
     compileSdk 31
 
     buildFeatures {
