@@ -8,6 +8,15 @@ android {
     signingConfigs {
         debug {
             storeFile file('C:\\Users\\user\\keystores\\android_keystore.jks')
+            storePassword '1332qeew'
+            keyPassword '1332qeew'
+            keyAlias 'key0'
+        }
+        aaaa {
+            storeFile file('C:\\Users\\user\\keystores\\android_keystore.jks')
+            storePassword '1332qeew'
+            keyPassword '1332qeew'
+            keyAlias 'aaa'
         }
     }
     compileSdk 31
@@ -31,6 +40,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
