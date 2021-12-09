@@ -3,6 +3,7 @@ package com.cheris.upchat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = binding.emailET.getText().toString(), password = binding.passwordET.getText().toString();
+                String email = binding.emailET.getText().toString().trim(), password = binding.passwordET.getText().toString().trim();
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -42,6 +43,15 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+                if (email == null) {
+                    Toast.makeText(LoginActivity.this, "Please enter your email address.", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (password == null){
+                        Toast.makeText(LoginActivity.this, "Please enter your password.", Toast.LENGTH_SHORT).show();
+                    } else {
+                    }
+                }
+
             }
         });
         binding.goToSignup.setOnClickListener(new View.OnClickListener() {
