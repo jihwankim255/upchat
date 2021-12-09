@@ -34,12 +34,12 @@ public class SignUpActivity extends AppCompatActivity {
         binding.signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = binding.emailET.getText().toString(), password = binding.passwordET.getText().toString();
+                String email = binding.emailET.getText().toString().trim(), password = binding.passwordET.getText().toString().trim();
                 auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult>    task) {
                         if (task.isSuccessful()) {
-                            User user = new User(binding.nameET.getText().toString(),binding.professionET.getText().toString(),email, password);
+                            User user = new User(binding.nameET.getText().toString().trim(),binding.professionET.getText().toString().trim(),email, password);
                             String id = task.getResult().getUser().getUid();
                             database.getReference().child("Users").child(id).setValue(user);
                             Toast.makeText(SignUpActivity.this, "User Data saved", Toast.LENGTH_SHORT).show();

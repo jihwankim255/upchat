@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="205dp"
-        android:layout_height="204dp"
+        android:layout_width="175dp"
+        android:layout_height="169dp"
         app:layout_constraintBottom_toTopOf="@+id/textView14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -68,6 +68,9 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:hint="Name"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:paddingBottom="5dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,6 +97,9 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:hint="Profession"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:paddingBottom="5dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,6 +126,9 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:paddingBottom="5dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,6 +155,9 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:hint="Password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:paddingBottom="5dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
