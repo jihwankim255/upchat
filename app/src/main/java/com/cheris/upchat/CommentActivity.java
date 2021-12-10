@@ -103,58 +103,62 @@ public class CommentActivity extends AppCompatActivity {
                 comment.setCommentBody(binding.commentET.getText().toString());
                 comment.setCommentedAt(new Date().getTime());
                 comment.setCommentedBy(FirebaseAuth.getInstance().getUid());
-
-                database.getReference()
-                        .child("posts")
-                        .child(postId)
-                        .child("comments")
-                        .push()
-                        .setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        database.getReference()
-                                .child("posts")
-                                .child(postId)
-                                .child("commentCount").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                int commentCount = 0;
-                                if (snapshot.exists()){
-                                    commentCount = snapshot.getValue(Integer.class);
-                                }
-                                database.getReference()
-                                        .child("posts")
-                                        .child(postId)
-                                        .child("commentCount")
-                                        .setValue(commentCount + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        binding.commentET.setText("");
-                                        Toast.makeText(CommentActivity.this, "Commented", Toast.LENGTH_SHORT).show();
-
-                                        Notification notification = new Notification();
-                                        notification.setNotificationBy(FirebaseAuth.getInstance().getUid());
-                                        notification.setNotificationAt(new Date().getTime());
-                                        notification.setPostID(postId);
-                                        notification.setPostedBy(postedBy);
-                                        notification.setType("comment");
-
-                                        FirebaseDatabase.getInstance().getReference()
-                                                .child("notification")
-                                                .child(postedBy)
-                                                .push()
-                                                .setValue(notification);
+                if (binding.commentET.getText().toString().length() == 0 ) {
+                    Toast.makeText(CommentActivity.this, "Please write a comment.", Toast.LENGTH_SHORT).show();
+                } else {
+                    database.getReference()
+                            .child("posts")
+                            .child(postId)
+                            .child("comments")
+                            .push()
+                            .setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            database.getReference()
+                                    .child("posts")
+                                    .child(postId)
+                                    .child("commentCount").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    int commentCount = 0;
+                                    if (snapshot.exists()){
+                                        commentCount = snapshot.getValue(Integer.class);
                                     }
-                                });
-                            }
+                                    database.getReference()
+                                            .child("posts")
+                                            .child(postId)
+                                            .child("commentCount")
+                                            .setValue(commentCount + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            binding.commentET.setText("");
+                                            Toast.makeText(CommentActivity.this, "Commented", Toast.LENGTH_SHORT).show();
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                                            Notification notification = new Notification();
+                                            notification.setNotificationBy(FirebaseAuth.getInstance().getUid());
+                                            notification.setNotificationAt(new Date().getTime());
+                                            notification.setPostID(postId);
+                                            notification.setPostedBy(postedBy);
+                                            notification.setType("comment");
 
-                            }
-                        });
-                    }
-                });
+                                            FirebaseDatabase.getInstance().getReference()
+                                                    .child("notification")
+                                                    .child(postedBy)
+                                                    .push()
+                                                    .setValue(notification);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    });
+                }
+
 
             }
         });

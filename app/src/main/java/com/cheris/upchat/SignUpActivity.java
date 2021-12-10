@@ -35,22 +35,34 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String email = binding.emailET.getText().toString().trim(), password = binding.passwordET.getText().toString().trim();
-                auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult>    task) {
-                        if (task.isSuccessful()) {
-                            User user = new User(binding.nameET.getText().toString().trim(),binding.professionET.getText().toString().trim(),email, password);
-                            String id = task.getResult().getUser().getUid();
-                            database.getReference().child("Users").child(id).setValue(user);
-                            Toast.makeText(SignUpActivity.this, "User Data saved", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                            startActivity(intent);
 
-                        } else {
-                            Toast.makeText(SignUpActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                if (binding.nameET.getText().toString().trim().length() == 0) {
+                    Toast.makeText(SignUpActivity.this, "Please enter your name.", Toast.LENGTH_SHORT).show();
+                } else if (binding.professionET.getText().toString().trim().length() == 0) {
+                    Toast.makeText(SignUpActivity.this, "Please enter your profession.", Toast.LENGTH_SHORT).show();
+                } else if (email.length() == 0) {
+                    Toast.makeText(SignUpActivity.this, "Please enter your email.", Toast.LENGTH_SHORT).show();
+                } else if ( password.length() == 0 ){
+                    Toast.makeText(SignUpActivity.this, "Please enter your password.", Toast.LENGTH_SHORT).show();
+                } else {
+                    auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                User user = new User(binding.nameET.getText().toString().trim(),binding.professionET.getText().toString().trim(),email, password);
+                                String id = task.getResult().getUser().getUid();
+                                database.getReference().child("Users").child(id).setValue(user);
+                                Toast.makeText(SignUpActivity.this, "User Data saved", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                startActivity(intent);
+
+                            } else {
+                                Toast.makeText(SignUpActivity.this, "You failed to sign up.", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
 

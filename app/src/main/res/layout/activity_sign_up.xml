@@ -190,10 +190,11 @@
 
     <TextView
         android:id="@+id/goToLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:text="Login!"
+        android:gravity="center"
         android:textColor="@color/design_default_color_primary"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
