@@ -6,6 +6,7 @@ public class User {
     private String userID;
     private int followerCount;
     private String profile;
+    private String blockUser;
 
     public User() {
 
@@ -80,5 +81,13 @@ public class User {
 
     public void setFollowerCount(int followerCount) {
         this.followerCount = followerCount;
+    }
+
+    public String getBlockUser() {
+        return blockUser;
+    }
+
+    public void setBlockUser(String blockUser) {
+        this.blockUser = blockUser;
     }
 }
