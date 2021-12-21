@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cheris.upchat.CommentActivity;
 import com.cheris.upchat.Model.Notification;
 import com.cheris.upchat.Model.Post;
@@ -48,7 +49,8 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
 
         Post model = list.get(position);
-        Picasso.get()
+//        Picasso.get()
+        Glide.with(context)
                 .load(model.getPostImage())
                 .placeholder(R.drawable.placeholder)
                 .into(holder.binding.postImage);
