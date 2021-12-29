@@ -1,6 +1,7 @@
 package com.cheris.upchat.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.cheris.upchat.Model.Post;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
@@ -29,13 +31,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
 
 public class AddPostFragment extends Fragment {
-
+    Context context;
     FragmentAddPostBinding binding;
     Uri uri;
     FirebaseAuth auth;
@@ -76,9 +77,13 @@ public class AddPostFragment extends Fragment {
                 .child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (getActivity() == null) {
+                    return;
+                }
                 if (snapshot.exists()) {
                     User user = snapshot.getValue(User.class);
-                    Picasso.get()
+//                    Picasso.get()
+                    Glide.with(getActivity())
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
                             .into(binding.notificationProfile);

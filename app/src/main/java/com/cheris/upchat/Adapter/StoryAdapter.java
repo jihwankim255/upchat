@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cheris.upchat.Model.Story;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.Model.UserStories;
@@ -18,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,7 +50,8 @@ public class StoryAdapter extends  RecyclerView.Adapter<StoryAdapter.viewHolder>
 
         if (story.getStories().size() > 0) {
             UserStories lastStory = story.getStories().get(story.getStories().size() - 1);
-            Picasso.get()
+//            Picasso.get()
+            Glide.with(context)
                     .load(lastStory.getImage())
                     .into(holder.binding.storyImg);
             holder.binding.statusCircle.setPortionsCount(story.getStories().size());
@@ -61,7 +62,8 @@ public class StoryAdapter extends  RecyclerView.Adapter<StoryAdapter.viewHolder>
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     User user = snapshot.getValue(User.class);
-                    Picasso.get()
+//                    Picasso.get()
+                    Glide.with(context)
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
                             .into(holder.binding.notificationProfile);

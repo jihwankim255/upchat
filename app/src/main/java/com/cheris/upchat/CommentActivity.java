@@ -1,5 +1,6 @@
 package com.cheris.upchat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.cheris.upchat.Adapter.CommentAdapter;
 import com.cheris.upchat.Model.Comment;
 import com.cheris.upchat.Model.Notification;
@@ -22,13 +24,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class CommentActivity extends AppCompatActivity {
-
+    Context context;
     ActivityCommentBinding binding;
     Intent intent;
     String postId;
@@ -60,7 +61,8 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Post post = snapshot.getValue(Post.class);
-                Picasso.get()
+//                Picasso.get()
+                Glide.with(CommentActivity.this)
                         .load(post.getPostImage())
                         .placeholder(R.drawable.placeholder)
                         .into(binding.postImage);
@@ -81,7 +83,8 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                Picasso.get()
+//                Picasso.get()
+                Glide.with(CommentActivity.this)
                         .load(user.getProfile())
                         .placeholder(R.drawable.placeholder)
                         .into(binding.notificationProfile); // 왜이러는지모름
