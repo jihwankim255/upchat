@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.cheris.upchat.Adapter.FollowersAdapter;
 import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.User;
@@ -28,13 +29,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 
 public class ProfileFragment extends Fragment {
-
 
 //    RecyclerView recyclerView;
     ArrayList<Follow> list;
@@ -85,13 +84,18 @@ public class ProfileFragment extends Fragment {
         database.getReference().child("Users").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (getActivity() == null) {
+                    return;
+                }
                 if (snapshot.exists()){
                     User user = snapshot.getValue(User.class);
-                    Picasso.get()
+//                    Picasso.get()
+                    Glide.with(getActivity())
                             .load(user.getCoverPhoto())
                             .placeholder(R.drawable.placeholder)
                             .into(binding.coverPhoto);
-                    Picasso.get()
+//                    Picasso.get()
+                    Glide.with(getActivity())
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
                             .into(binding.profileImage);

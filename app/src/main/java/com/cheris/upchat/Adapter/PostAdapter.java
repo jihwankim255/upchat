@@ -22,7 +22,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,7 +68,8 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                Picasso.get()
+//                Picasso.get()
+                Glide.with(context)
                         .load(user.getProfile())
                         .placeholder(R.drawable.placeholder)
                         .into(holder.binding.notificationProfile);

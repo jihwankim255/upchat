@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.Notification;
 import com.cheris.upchat.Model.User;
@@ -21,7 +22,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +47,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder>{
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         User user = list.get(position);
-        Picasso.get()
+//        Picasso.get()
+        Glide.with(context)
                 .load(user.getProfile())
                 .placeholder(R.drawable.placeholder)
                 .into(holder.binding.notificationProfile);

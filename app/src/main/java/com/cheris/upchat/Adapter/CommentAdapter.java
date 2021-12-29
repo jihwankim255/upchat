@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cheris.upchat.Model.Comment;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
@@ -18,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -54,7 +54,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.viewHold
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                Picasso.get()
+//                Picasso.get()
+                Glide.with(context)
                         .load(user.getProfile())
                         .into(holder.binding.notificationProfile); // 맞음
                 holder.binding.comment.setText(Html.fromHtml("<b>"+user.getName() + "</b>   " + comment.getCommentBody()));

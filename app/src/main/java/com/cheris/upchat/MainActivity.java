@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.setTitle("My Profile");
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        binding.toolbar.setVisibility(View.GONE);
+        binding.toolbar.setVisibility(View.VISIBLE);
         transaction.replace(R.id.container, new HomeFragment());
         transaction.commit();
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (i) {
                     case 0:
-                        binding.toolbar.setVisibility(View.GONE);
+                        binding.toolbar.setVisibility(View.VISIBLE);
                         transaction.replace(R.id.container, new HomeFragment());
                         break;
 
