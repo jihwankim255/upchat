@@ -6,6 +6,7 @@ public class User {
     private String userID;
     private int followerCount;
     private String profile;
+    private String lastMessage;
     private String blockUser;
 
     public User() {
@@ -26,6 +27,8 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+
 
     public String getName() {
         return name;
@@ -90,4 +93,9 @@ public class User {
     public void setBlockUser(String blockUser) {
         this.blockUser = blockUser;
     }
+
+    public String getLastMessage() { return lastMessage; }
+
+    public void setLastMessage(String lastMessage) { this.lastMessage = lastMessage; }
+
 }
