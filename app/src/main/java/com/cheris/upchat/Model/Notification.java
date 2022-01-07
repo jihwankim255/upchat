@@ -10,6 +10,8 @@ public class Notification {
     private String postedBy;
     private boolean checkOpen;
 
+    public Notification() {
+    }
 
     public String getNotificationBy() {
         return notificationBy;
