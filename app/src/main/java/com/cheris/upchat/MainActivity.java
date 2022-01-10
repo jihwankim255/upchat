@@ -11,10 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cheris.upchat.Fragment.AddPostFragment;
+import com.cheris.upchat.Fragment.ChatFragment;
 import com.cheris.upchat.Fragment.HomeFragment;
 import com.cheris.upchat.Fragment.NotificationFragment;
 import com.cheris.upchat.Fragment.ProfileFragment;
-import com.cheris.upchat.Fragment.SearchFragment;
 import com.cheris.upchat.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.iammert.library.readablebottombar.ReadableBottomBar;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case 3:
                         binding.toolbar.setVisibility(View.GONE);
-                        transaction.replace(R.id.container, new SearchFragment());
+                        transaction.replace(R.id.container, new ChatFragment());
                         break;
 
                     case 4:
