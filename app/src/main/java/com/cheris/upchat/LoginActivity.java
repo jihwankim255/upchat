@@ -36,9 +36,11 @@ public class LoginActivity extends AppCompatActivity {
                 String email = binding.emailET.getText().toString().trim(), password = binding.passwordET.getText().toString().trim();
 
                 if (email.length() == 0) {
+                    binding.emailET.setError("Enter your email");
                     Toast.makeText(LoginActivity.this, "Please enter your email address.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (password.length() == 0){
+                        binding.passwordET.setError("Enter your password");
                         Toast.makeText(LoginActivity.this, "Please enter your password.", Toast.LENGTH_SHORT).show();
                     } else {
                         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
