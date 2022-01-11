@@ -90,6 +90,10 @@ public class ChatDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String message = binding.etMessage.getText().toString();
+                if (message.trim().isEmpty()) {
+                    binding.etMessage.setError("Enter your message");
+                    return;
+                }
                 final MessageModel model = new MessageModel(senderId, message);
                 model.setTimestamp(new Date().getTime());
                 binding.etMessage.setText("");
