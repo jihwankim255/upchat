@@ -175,7 +175,7 @@
         android:background="@android:color/transparent"
         android:ems="10"
         android:hint="Write a comment..."
-        android:inputType="textMultiLine|textPersonName"
+        android:inputType="textMultiLine|textPersonName|textNoSuggestions"
         android:maxLines="4"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
