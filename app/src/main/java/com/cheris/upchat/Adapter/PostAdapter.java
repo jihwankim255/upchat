@@ -49,10 +49,15 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 
         Post model = list.get(position);
 //        Picasso.get()
-        Glide.with(context)
-                .load(model.getPostImage())
-                .placeholder(R.drawable.placeholder)
-                .into(holder.binding.postImage);
+        if (model.getPostImage() != null ){
+            Glide.with(context)
+                    .load(model.getPostImage())
+                    .placeholder(R.drawable.placeholder)
+                    .into(holder.binding.postImage);
+        } else {
+            holder.binding.postImage.setVisibility(View.GONE);
+        }
+
         holder.binding.like.setText(model.getPostLike()+"");
         holder.binding.comment.setText(model.getCommentCount()+"");
         String description = model.getPostDescription();
@@ -62,7 +67,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             holder.binding.postDescription.setText(model.getPostDescription());
             holder.binding.postDescription.setVisibility(View.VISIBLE);
         }
-
+        // 알림
         FirebaseDatabase.getInstance().getReference().child("Users")
                 .child(model.getPostedBy()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,7 +88,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 
             }
         });
-
+        //
         FirebaseDatabase.getInstance().getReference()
                 .child("posts")
                 .child(model.getPostId())

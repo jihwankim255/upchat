@@ -2,13 +2,13 @@ package com.cheris.upchat.Model;
 
 public class Post {
 
-    private String postId;
-    private String postImage;
-    private String postedBy;
-    private String postDescription;
-    private long postedAt;
-    private int postLike;
-    private int commentCount;
+    private String postId;     // 올린 사람 Id
+    private String postImage;  // 올린 이미지
+    private String postedBy;    // 올린 사람
+    private String postDescription;  // 올린 글
+    private long postedAt;        // 올린 날짜
+    private int postLike;         //글에 달린 좋아요
+    private int commentCount;     //글에 달린 댓글 수
 
     public int getPostLike() {
         return postLike;
