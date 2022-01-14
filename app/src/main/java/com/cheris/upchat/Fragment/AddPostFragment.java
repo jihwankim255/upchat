@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.cheris.upchat.Model.Post;
@@ -57,6 +58,7 @@ public class AddPostFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
         dialog = new ProgressDialog(getContext());
+
 
     }
 
@@ -142,31 +144,53 @@ public class AddPostFragment extends Fragment {
                 final StorageReference reference = storage.getReference().child("posts")
                         .child(FirebaseAuth.getInstance().getUid())
                         .child(new Date().getTime()+"");
-                reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Post post = new Post();
-                                post.setPostImage(uri.toString());
-                                post.setPostedBy(FirebaseAuth.getInstance().getUid());
-                                post.setPostDescription(binding.postDescription.getText().toString());
-                                post.setPostedAt(new Date().getTime());
+                if (uri == null) { // 사진 업로드를 안했을 때
+                    binding.postDescription.setVisibility(View.GONE);
 
-                                database.getReference().child("posts")
-                                        .push()
-                                        .setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        dialog.dismiss();
-                                        Toast.makeText(getContext(), "Posted Successfully", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
+                    Post post = new Post();
+                    post.setPostedBy(FirebaseAuth.getInstance().getUid());
+                    post.setPostDescription(binding.postDescription.getText().toString());
+                    post.setPostedAt(new Date().getTime());
+                    database.getReference().child("posts")
+                            .push()
+                            .setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            dialog.dismiss();
+                            Toast.makeText(getContext(), "Posted Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {  // 사진 업로드를 했을 때
+                    reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Post post = new Post();
+                                    post.setPostImage(uri.toString());
+                                    post.setPostedBy(FirebaseAuth.getInstance().getUid());
+                                    post.setPostDescription(binding.postDescription.getText().toString());
+                                    post.setPostedAt(new Date().getTime());
+
+                                    database.getReference().child("posts")
+                                            .push()
+                                            .setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            dialog.dismiss();
+                                            Toast.makeText(getContext(), "Posted Successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, new HomeFragment());
+
+
             }
         });
 
@@ -176,15 +200,18 @@ public class AddPostFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data.getData() != null){
-            uri = data.getData();
-            binding.postImage.setImageURI(uri);
-            binding.postImage.setVisibility(View.VISIBLE);
+        if(data!=null) {
+            if (data.getData() != null){
+                uri = data.getData();
+                binding.postImage.setImageURI(uri);
+                binding.postImage.setVisibility(View.VISIBLE);
 
-            binding.postBtn.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.follow_btn_bg));
-            binding.postBtn.setTextColor(getContext().getResources().getColor(R.color.white));
-            binding.postBtn.setEnabled(true);
+                binding.postBtn.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.follow_btn_bg));
+                binding.postBtn.setTextColor(getContext().getResources().getColor(R.color.white));
+                binding.postBtn.setEnabled(true);
 
+            }
         }
+
     }
 }
