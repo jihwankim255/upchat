@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cheris.upchat.Adapter.ChatAdapter;
+import com.cheris.upchat.MainActivity;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.databinding.FragmentChatBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +37,7 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         binding = FragmentChatBinding.inflate(inflater, container, false);
 
