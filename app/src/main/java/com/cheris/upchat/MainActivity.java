@@ -1,13 +1,16 @@
 package com.cheris.upchat;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cheris.upchat.Fragment.AddPostFragment;
@@ -35,39 +38,37 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         binding.toolbar.setVisibility(View.VISIBLE);
-        transaction.replace(R.id.container, new HomeFragment());
+        transaction.replace(R.id.container, new HomeFragment(),"HomeFragment");
         transaction.commit();
-
         binding.readableBottomBar.setOnItemSelectListener(new ReadableBottomBar.ItemSelectListener() {
             @Override
             public void onItemSelected(int i) {
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
                 switch (i) {
                     case 0:
                         binding.toolbar.setVisibility(View.VISIBLE);
-                        transaction.replace(R.id.container, new HomeFragment());
+                        transaction.replace(R.id.container, new HomeFragment(),"0");
                         break;
 
                     case 1:
                         binding.toolbar.setVisibility(View.GONE);
-                        transaction.replace(R.id.container, new NotificationFragment());
+                        transaction.replace(R.id.container, new NotificationFragment(),"1");
                         break;
 
                     case 2:
                         binding.toolbar.setVisibility(View.GONE);
-                        transaction.replace(R.id.container, new AddPostFragment());
+                        transaction.replace(R.id.container, new AddPostFragment(),"2");
                         break;
 
                     case 3:
                         binding.toolbar.setVisibility(View.GONE);
-                        transaction.replace(R.id.container, new ChatFragment());
+                        transaction.replace(R.id.container, new ChatFragment(),"3");
                         break;
 
                     case 4:
                         binding.toolbar.setVisibility(View.VISIBLE);
-                        transaction.replace(R.id.container, new ProfileFragment());
+                        transaction.replace(R.id.container, new ProfileFragment(),"4");
                         break;
                 }
                 transaction.commit();
@@ -93,5 +94,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+
+//        Log.d("BackStackEntryCount ", String.valueOf());
+//        FragmentManager.BackStackEntry backEntry = (FragmentManager.BackStackEntry) getSupportFragmentManager().getBackStackEntryAt(index);
+//        String tag = backEntry.getName();
+//        Log.d("tag", tag);
+//        binding.readableBottomBar.selectItem(Integer.parseInt(tag));
+
+
+
     }
 }
