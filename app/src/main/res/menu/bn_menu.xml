@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bn_home"
+        android:title="@string/home"
+        android:icon="@drawable/ic_home"/>
+
+    <item
+        android:id="@+id/bn_notification"
+        android:title="@string/notification"
+        android:icon="@drawable/ic_notification"/>
+
+    <item
+        android:id="@+id/bn_add"
+        android:title="@string/add"
+        android:icon="@drawable/ic_add"/>
+
+    <item
+        android:id="@+id/bn_search"
+        android:title="@string/search"
+        android:icon="@drawable/ic_magnifier"/>
+
+    <item
+        android:id="@+id/bn_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_user"/>
+
+</menu>

@@ -44,7 +44,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         String profilePic = getIntent().getStringExtra("profilePic");
 
         binding.detailUserName.setText(userName);
-        Glide.with(ChatDetailActivity.this).load(profilePic).placeholder(R.drawable.ic_profile).into(binding.profileImage);
+        Glide.with(this).load(profilePic).placeholder(R.drawable.ic_profile).into(binding.profileImage);
 
         binding.backArrow.setOnClickListener(new View.OnClickListener() {
             @Override

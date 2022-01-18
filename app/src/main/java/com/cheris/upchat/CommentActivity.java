@@ -62,13 +62,17 @@ public class CommentActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Post post = snapshot.getValue(Post.class);
 //                Picasso.get()
-                Glide.with(CommentActivity.this)
-                        .load(post.getPostImage())
-                        .placeholder(R.drawable.placeholder)
-                        .into(binding.postImage);
-                binding.description.setText(post.getPostDescription());
-                binding.like.setText(post.getPostLike()+"");
-                binding.comment.setText(post.getCommentCount()+"");
+                if (post != null) {
+                    Glide.with(CommentActivity.this)
+                            .load(post.getPostImage())
+                            .placeholder(R.drawable.placeholder)
+                            .into(binding.postImage);
+                    binding.description.setText(post.getPostDescription());
+                    binding.like.setText(post.getPostLike()+"");
+                    binding.comment.setText(post.getCommentCount()+"");
+
+                }
+
             }
 
             @Override

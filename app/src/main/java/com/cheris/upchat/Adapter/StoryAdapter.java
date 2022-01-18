@@ -51,10 +51,12 @@ public class StoryAdapter extends  RecyclerView.Adapter<StoryAdapter.viewHolder>
         if (story.getStories().size() > 0) {
             UserStories lastStory = story.getStories().get(story.getStories().size() - 1);
 //            Picasso.get()
-            Glide.with(context)
-                    .load(lastStory.getImage())
-                    .into(holder.binding.storyImg);
-            holder.binding.statusCircle.setPortionsCount(story.getStories().size());
+            if (lastStory.getImage() != null) {
+                Glide.with(context)
+                        .load(lastStory.getImage())
+                        .into(holder.binding.storyImg);
+                holder.binding.statusCircle.setPortionsCount(story.getStories().size());
+            }
 
             FirebaseDatabase.getInstance().getReference()
                     .child("Users")
@@ -63,11 +65,13 @@ public class StoryAdapter extends  RecyclerView.Adapter<StoryAdapter.viewHolder>
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     User user = snapshot.getValue(User.class);
 //                    Picasso.get()
-                    Glide.with(context)
-                            .load(user.getProfile())
-                            .placeholder(R.drawable.placeholder)
-                            .into(holder.binding.notificationProfile);
-                    holder.binding.name.setText(user.getName());
+                    if (user != null) {
+                        Glide.with(context)
+                                .load(user.getProfile())
+                                .placeholder(R.drawable.placeholder)
+                                .into(holder.binding.notificationProfile);
+                        holder.binding.name.setText(user.getName());
+                    }
 
                     holder.binding.storyImg.setOnClickListener(new View.OnClickListener() {
                         @Override

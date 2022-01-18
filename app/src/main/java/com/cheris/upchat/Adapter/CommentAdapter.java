@@ -55,10 +55,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.viewHold
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
 //                Picasso.get()
-                Glide.with(context)
-                        .load(user.getProfile())
-                        .into(holder.binding.notificationProfile); // 맞음
-                holder.binding.comment.setText(Html.fromHtml("<b>"+user.getName() + "</b>   " + comment.getCommentBody()));
+                if (user != null) {
+                    Glide.with(context)
+                            .load(user.getProfile())
+                            .into(holder.binding.notificationProfile); // 맞음
+                    holder.binding.comment.setText(Html.fromHtml("<b>"+user.getName() + "</b>   " + comment.getCommentBody()));
+                }
+
             }
 
             @Override
