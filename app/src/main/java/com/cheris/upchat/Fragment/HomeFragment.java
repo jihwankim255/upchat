@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
 
         StoryAdapter adapter = new StoryAdapter(storyList,getContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        storyRV.setLayoutManager(layoutManager);;
+        storyRV.setLayoutManager(layoutManager);
         storyRV.setNestedScrollingEnabled(false);
         storyRV.setAdapter(adapter);
 
@@ -109,6 +109,9 @@ public class HomeFragment extends Fragment {
                         Story story = new Story();
                         story.setStoryBy(storySnapshot.getKey());
                         story.setStoryAt(storySnapshot.child("postedBy").getValue(Long.class));
+
+
+
 
                         ArrayList<UserStories> stories = new ArrayList<>();
                         for (DataSnapshot snapshot1 : storySnapshot.child("userStories").getChildren()){
@@ -145,7 +148,7 @@ public class HomeFragment extends Fragment {
                 postList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Post post = dataSnapshot.getValue(Post.class);
-                    post.setPostId(dataSnapshot.getKey());
+                    post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
                     postList.add(post);
                 }
                 dashboardRV.setAdapter(postAdapter);
@@ -170,49 +173,52 @@ public class HomeFragment extends Fragment {
         galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
-                addStoryImage.setImageURI(result);
+                if (result != null) {
+                    addStoryImage.setImageURI(result);
 
-                dialog.show();
+                    dialog.show();
 
-                final StorageReference reference = storage.getReference()
-                        .child("stories")
-                        .child(FirebaseAuth.getInstance().getUid())
-                        .child(new Date().getTime()+"");
-                reference.putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Story story = new Story();
-                                story.setStoryAt(new Date().getTime());
+                    final StorageReference reference = storage.getReference()
+                            .child("stories")
+                            .child(FirebaseAuth.getInstance().getUid())  //might be null
+                            .child(new Date().getTime()+"");
+                    reference.putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Story story = new Story();
+                                    story.setStoryAt(new Date().getTime());
 
-                                database.getReference()
-                                        .child("stories")
-                                        .child(FirebaseAuth.getInstance().getUid())
-                                        .child("postedBy")
-                                        .setValue(story.getStoryAt()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        UserStories stories = new UserStories(uri.toString(), story.getStoryAt());
+                                    database.getReference()
+                                            .child("stories")
+                                            .child(FirebaseAuth.getInstance().getUid())
+                                            .child("postedBy")
+                                            .setValue(story.getStoryAt()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            UserStories stories = new UserStories(uri.toString(), story.getStoryAt());
 
-                                        database.getReference()
-                                                .child("stories")
-                                                .child(FirebaseAuth.getInstance().getUid())
-                                                .child("userStories")
-                                                .push()
-                                                .setValue(stories).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
+                                            database.getReference()
+                                                    .child("stories")
+                                                    .child(FirebaseAuth.getInstance().getUid())
+                                                    .child("userStories")
+                                                    .push()
+                                                    .setValue(stories).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+
             }
         });
 

@@ -48,10 +48,15 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.view
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
 //                Picasso.get()
-                Glide.with(context)
-                        .load(user.getProfile())
-                        .placeholder(R.drawable.placeholder)
-                        .into(holder.binding.notificationProfile);
+                if (user.getProfile() != null) {
+                    Glide.with(context)
+                            .load(user.getProfile())
+                            .placeholder(R.drawable.placeholder)
+                            .into(holder.binding.notificationProfile);
+                } else {
+
+                }
+
             }
 
             @Override

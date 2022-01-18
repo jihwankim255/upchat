@@ -10,7 +10,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/readableBottomBar"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,21 +31,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.iammert.library.readablebottombar.ReadableBottomBar
-        android:id="@+id/readableBottomBar"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="?android:windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:rbb_activeItemType="text"
-        app:rbb_backgroundColor="@color/white"
-        app:rbb_indicatorColor="@color/orange"
-        app:rbb_tabs="@xml/tabs"
-        app:rbb_textColor="@color/orange">
+        app:menu="@menu/bn_menu"/>
 
-    </com.iammert.library.readablebottombar.ReadableBottomBar>
+<!--    <com.iammert.library.readablebottombar.ReadableBottomBar-->
+<!--        android:id="@+id/readableBottomBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="56dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:rbb_activeItemType="text"-->
+<!--        app:rbb_backgroundColor="@color/white"-->
+<!--        app:rbb_indicatorColor="@color/orange"-->
+<!--        app:rbb_tabs="@xml /tabs"-->
+<!--        app:rbb_textColor="@color/orange">-->
+
+<!--    </com.iammert.library.readablebottombar.ReadableBottomBar>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
