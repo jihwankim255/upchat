@@ -29,9 +29,11 @@ import java.util.Date;
 
 public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 
+    // Initialize variable
     ArrayList<Post> list;
     Context context;
 
+    // Create constructor
     public PostAdapter(ArrayList<Post> list, Context context) {
         this.list = list;
         this.context = context;
@@ -40,12 +42,14 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Initialize view
         View view = LayoutInflater.from(context).inflate(R.layout.dashboard_rv_sample, parent, false);
         return new viewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
+        // Initialize main data
 
         Post model = list.get(position);
 //        Picasso.get()
@@ -170,7 +174,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
         DashboardRvSampleBinding binding;
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            // 이부분 안쓰면 nullPointerException 뜸
+            // 이부분 안쓰면 nullPointerException 뜸. rv_sample과 연결해주는 부분
             binding = DashboardRvSampleBinding.bind(itemView);
 
 

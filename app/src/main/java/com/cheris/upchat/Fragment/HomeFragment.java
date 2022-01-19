@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +54,11 @@ public class HomeFragment extends Fragment {
     ActivityResultLauncher<String> galleryLauncher;
     ProgressDialog dialog;
 
+    // Lazy loading
+    NestedScrollView dashboard_nestedScrollView;
+    ProgressBar progressBar;
+    int page = 1, limit = 10;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -66,6 +73,8 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
 
         dialog = new ProgressDialog(getContext());
+
+
     }
 
     @Override
@@ -76,6 +85,10 @@ public class HomeFragment extends Fragment {
 
         dashboardRV = view.findViewById(R.id.dashboardRV);
         dashboardRV.showShimmerAdapter();
+
+        // Lazy loading
+        dashboard_nestedScrollView = view.findViewById(R.id.dashboard_nestedScrollView);
+        progressBar = view.findViewById(R.id.dashboard_progress_bar);
 
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -152,15 +165,34 @@ public class HomeFragment extends Fragment {
                     postList.add(post);
                 }
                 dashboardRV.setAdapter(postAdapter);
+
                 dashboardRV.hideShimmerAdapter();
                 postAdapter.notifyDataSetChanged();
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+        // Lazy load scrolling listener
+        dashboard_nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                // Check condition
+                if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    // When reach last item position
+                    // Increase page size
+                    page++;
+                    // Show progress bar
+                    progressBar.setVisibility(View.VISIBLE);
+                    // 데이터를 가져와라 부분 추가
+                }
+
+            }
+        });
+
 //        addStory = view.findViewById(R.id.addS)
         addStoryImage = view.findViewById(R.id.storyImg);
         addStoryImage.setOnClickListener(new View.OnClickListener() {
@@ -225,4 +257,6 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
+
 }

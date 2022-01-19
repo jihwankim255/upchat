@@ -14,7 +14,11 @@ public class User {
     }
 
     public String getCoverPhoto() {
-        return coverPhoto;
+        if (coverPhoto != null) {
+            return coverPhoto;}
+        else { // default cover photo
+            return ("https://firebasestorage.googleapis.com/v0/b/upchat-a0789.appspot.com/o/profile_image%2Fdefault_cover_photo.jpg?alt=media&token=d8df274f-454f-490d-9f22-fc5f09061942");
+        }
     }
 
     public void setCoverPhoto(String coverPhoto) {
@@ -63,7 +67,12 @@ public class User {
     }
 
     public String getProfile() {
-        return profile;
+        if (profile != null) {
+            return profile;
+        } else {  // 프사 설정 안했을 때
+            return ("https://firebasestorage.googleapis.com/v0/b/upchat-a0789.appspot.com/o/profile_image%2Fdefault_profile.jpg?alt=media&token=5e28932f-3872-4121-a975-051f597e8599");
+        }
+
     }
 
     public void setProfile(String profile) {
