@@ -79,7 +79,6 @@ public class ProfileFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         binding.friendRV.setLayoutManager(layoutManager);
         binding.friendRV.setAdapter(adapter);
-
         // 데이터불러오기 아랫부분이랑 비슷해서 헷갈림 주의
         database.getReference().child("Users").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -99,6 +98,8 @@ public class ProfileFragment extends Fragment {
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
                             .into(binding.profileImage);
+
+
                     binding.userName.setText(user.getName());
                     binding.profession.setText(user.getProfession());
                     binding.followers.setText(user.getFollowerCount()+"");

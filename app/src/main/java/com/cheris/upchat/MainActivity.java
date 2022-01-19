@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.bn_add:
                 bottomNavigationView.getMenu().getItem(2).setChecked(true);
                 return new AddPostFragment();
-            case R.id.bn_search:
+            case R.id.bn_chat:
                 bottomNavigationView.getMenu().getItem(3).setChecked(true);
                 return new ChatFragment();
             case R.id.bn_profile:

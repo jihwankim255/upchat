@@ -17,9 +17,9 @@
         android:icon="@drawable/ic_add"/>
 
     <item
-        android:id="@+id/bn_search"
+        android:id="@+id/bn_chat"
         android:title="@string/search"
-        android:icon="@drawable/ic_magnifier"/>
+        android:icon="@drawable/ic_bottomnav_chat"/>
 
     <item
         android:id="@+id/bn_profile"
