@@ -143,10 +143,11 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+
                 // Dashboard Recycler View
 
         postList = new ArrayList<>();
-
 
         PostAdapter postAdapter = new PostAdapter(postList,getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -155,7 +156,7 @@ public class HomeFragment extends Fragment {
         dashboardRV.setNestedScrollingEnabled(false);
 
 
-        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
+    database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList.clear();

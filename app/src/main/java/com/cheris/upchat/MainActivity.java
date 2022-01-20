@@ -145,12 +145,15 @@ public class MainActivity extends AppCompatActivity {
                 return new NotificationFragment();
             case R.id.bn_add:
                 bottomNavigationView.getMenu().getItem(2).setChecked(true);
+                binding.toolbar.setVisibility(View.GONE);
                 return new AddPostFragment();
             case R.id.bn_chat:
                 bottomNavigationView.getMenu().getItem(3).setChecked(true);
+                binding.toolbar.setVisibility(View.GONE);
                 return new ChatFragment();
             case R.id.bn_profile:
                 bottomNavigationView.getMenu().getItem(4).setChecked(true);
+                binding.toolbar.setVisibility(View.VISIBLE);
                 return new ProfileFragment();
         }
         //Set checked default home fragment
