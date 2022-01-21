@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
     ActivityResultLauncher<String> galleryLauncher;
     ProgressDialog dialog;
 
-    // Lazy loading
+    // endless loading
     NestedScrollView dashboard_nestedScrollView;
     ProgressBar progressBar;
     int page = 1, limit = 10;
@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        // Lazy load scrolling listener
+        // endless load scrolling listener
         dashboard_nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
