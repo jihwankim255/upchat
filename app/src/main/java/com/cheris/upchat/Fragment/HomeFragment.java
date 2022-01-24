@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
     ShimmerRecyclerView dashboardRV;
     ArrayList<Story> storyList;
     ArrayList<Post> postList;
-//    ImageView addstory;
+    //    ImageView addstory;
     FirebaseDatabase database;
     FirebaseAuth auth;
     FirebaseStorage storage;
@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
         });
 
 
-                // Dashboard Recycler View
+        // Dashboard Recycler View
 
         postList = new ArrayList<>();
 
@@ -156,7 +156,7 @@ public class HomeFragment extends Fragment {
         dashboardRV.setNestedScrollingEnabled(false);
 
 
-    database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
+        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList.clear();
