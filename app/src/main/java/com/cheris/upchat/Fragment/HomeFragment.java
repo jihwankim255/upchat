@@ -6,17 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.cheris.upchat.Adapter.PostAdapter;
 import com.cheris.upchat.Adapter.StoryAdapter;
@@ -54,10 +53,9 @@ public class HomeFragment extends Fragment {
     ActivityResultLauncher<String> galleryLauncher;
     ProgressDialog dialog;
 
-    // endless loading
-    NestedScrollView dashboard_nestedScrollView;
-    ProgressBar progressBar;
-    int page = 1, limit = 10;
+
+// swipeRefreshLayout
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public HomeFragment() {
@@ -81,14 +79,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
+
+        //swiperefreshlayout
+        swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
 
         dashboardRV = view.findViewById(R.id.dashboardRV);
         dashboardRV.showShimmerAdapter();
 
-        // Lazy loading
-        dashboard_nestedScrollView = view.findViewById(R.id.dashboard_nestedScrollView);
-        progressBar = view.findViewById(R.id.dashboard_progress_bar);
 
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -155,8 +154,8 @@ public class HomeFragment extends Fragment {
         dashboardRV.addItemDecoration(new DividerItemDecoration(dashboardRV.getContext(),DividerItemDecoration.HORIZONTAL));
         dashboardRV.setNestedScrollingEnabled(false);
 
-
-        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
+        database.getReference().child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+//        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList.clear();
@@ -177,22 +176,36 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        // endless load scrolling listener
-        dashboard_nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                // Check condition
-                if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                    // When reach last item position
-                    // Increase page size
-                    page++;
-                    // Show progress bar
-                    progressBar.setVisibility(View.VISIBLE);
-                    // 데이터를 가져와라 부분 추가
+            public void onRefresh() {
+                database.getReference().child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    postList.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Post post = dataSnapshot.getValue(Post.class);
+                        post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
+                        postList.add(post);
+                    }
+                    dashboardRV.setAdapter(postAdapter);
+
+                    dashboardRV.hideShimmerAdapter();
+                    postAdapter.notifyDataSetChanged();
                 }
 
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
+
 
 //        addStory = view.findViewById(R.id.addS)
         addStoryImage = view.findViewById(R.id.storyImg);

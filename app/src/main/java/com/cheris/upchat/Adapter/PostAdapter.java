@@ -121,7 +121,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                                             .setValue(model.getPostLike() + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_2,0,0,0);
+                                            holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_2,0,0,0); //how to programmatically set drawableleft on android button
 
                                             Notification notification = new Notification();
                                             notification.setNotificationBy(FirebaseAuth.getInstance().getUid());
@@ -166,7 +166,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list != null ?list.size() : 0;
     }
 
     public class viewHolder extends RecyclerView.ViewHolder{
