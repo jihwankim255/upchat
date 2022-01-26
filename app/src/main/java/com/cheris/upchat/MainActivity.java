@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cheris.upchat.Fragment.AddPostFragment;
@@ -30,10 +31,19 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
+    // BottomNavigation with backstack
     BottomNavigationView bottomNavigationView;
     Deque<Integer> integerDeque = new ArrayDeque<>(5);
     boolean flag = true;
 
+    // prevent recreation of fragment
+    final Fragment homeFragment = new HomeFragment();
+    final Fragment notificationFragment = new NotificationFragment();
+    final Fragment addPostFragment = new AddPostFragment();
+    final Fragment chatFragment = new ChatFragment();
+    final Fragment profileFragment = new ProfileFragment();
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         binding.toolbar.setVisibility(View.VISIBLE);
-        transaction.replace(R.id.container, new HomeFragment(),"0");
+        transaction.replace(R.id.container, homeFragment,"0");
         transaction.commit();
 
         //Assign variable

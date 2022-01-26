@@ -1,44 +1,28 @@
-package com.cheris.upchat.Model;
+package com.cheris.upchat.Model
 
-public class MessageModel {
+class MessageModel {
+    var uId: String? = null
+    var message: String? = null
+    var timestamp: Long? = null
 
-    String uId, message;
-    Long timestamp;
-
-    public MessageModel(String uId, String message, Long timestamp) {
-        this.uId = uId;
-        this.message = message;
-        this.timestamp = timestamp;
+    constructor(uId: String?, message: String?, timestamp: Long?) {
+        this.uId = uId
+        this.message = message
+        this.timestamp = timestamp
     }
 
-    public MessageModel(String uId, String message) {
-        this.uId = uId;
-        this.message = message;
+    constructor(uId: String?, message: String?) {
+        this.uId = uId
+        this.message = message
     }
 
-    public  MessageModel(){}
+    constructor() {}
 
-    public String getuId() {
-        return uId;
+    fun getuId(): String? {
+        return uId
     }
 
-    public void setuId(String uId) {
-        this.uId = uId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    fun setuId(uId: String?) {
+        this.uId = uId
     }
 }
