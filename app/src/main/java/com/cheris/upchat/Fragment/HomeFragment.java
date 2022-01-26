@@ -53,7 +53,6 @@ public class HomeFragment extends Fragment {
     ActivityResultLauncher<String> galleryLauncher;
     ProgressDialog dialog;
 
-
 // swipeRefreshLayout
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -81,6 +80,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
+
+
 
         //swiperefreshlayout
         swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
