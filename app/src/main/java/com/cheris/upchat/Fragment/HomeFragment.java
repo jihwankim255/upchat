@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,6 +47,7 @@ public class HomeFragment extends Fragment {
     RecyclerView storyRV;
     ArrayList<Story> storyList;
 
+    NestedScrollView nestedScrollView;
     RoundedImageView addStoryImage;
     ShimmerRecyclerView dashboardRV;
     ArrayList<Post> postList;
@@ -59,10 +62,15 @@ public class HomeFragment extends Fragment {
     ProgressDialog dialog;
 
     // load more
-    boolean isLoading = false;
-    String key = null;
-    boolean isScrolling = false;
-    int currentItems, totalItems, scrollOutItems;
+
+    ArrayList<String> oldPost_get = new ArrayList<>();
+    String oldestPostId = "";
+    int initial_num = 20;
+    int additional_num = 20;
+
+
+
+
 
 // swipeRefreshLayout
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -92,7 +100,7 @@ public class HomeFragment extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
 
-
+        nestedScrollView = view.findViewById(R.id.nestedScrollView);
 
         //swiperefreshlayout
         swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
@@ -168,32 +176,35 @@ public class HomeFragment extends Fragment {
 
         loadData();
 
-        dashboardRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(!dashboardRV.canScrollVertically(1)) {
-                    database.getReference().child("posts").orderByKey().endAt(key).limitToLast(5).addListenerForSingleValueEvent(new ValueEventListener() {
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (!nestedScrollView.canScrollVertically(1)) {
+                    database.getReference().child("posts").orderByKey().endAt(oldestPostId).limitToLast(additional_num+1).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
                             postList_get.clear(); //임시저장 위치
-                            postList.clear();
-                            for (DataSnapshot item : dataSnapshot.getChildren()) {
+                            oldPost_get.clear();
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 Post post = dataSnapshot.getValue(Post.class);
                                 post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
-                                postList.add(0,post);
                                 postList_get.add(0,post);
-//                    oldPostList_get.add(dataSnapshot.getKey());
-                                key = dataSnapshot.getKey();
+                                oldPost_get.add(dataSnapshot.getKey());
                             }
+                            // 불러오는 중인지, 전부 불러왔는지 if문
                             if (postList_get.size()>1){
-                            postList_get.remove(0);
-                            postList.addAll(postList_get);
+                                postList_get.remove(0);
+                                postList.addAll(postList_get);
+                                oldestPostId = oldPost_get.get(0);
+                                // 메시지 갱신 위치
+                                dashboardRV.hideShimmerAdapter();
+                                postAdapter.notifyDataSetChanged();
+                            } else {
+                                Toast.makeText(getActivity(), "마지막 포스트입니다.", Toast.LENGTH_SHORT).show();
                             }
                             dashboardRV.setAdapter(postAdapter);
 
-                            dashboardRV.hideShimmerAdapter();
-                            postAdapter.notifyDataSetChanged();
+
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
@@ -205,10 +216,23 @@ public class HomeFragment extends Fragment {
             }
         });
 
+//        dashboardRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                if(!dashboardRV.canScrollVertically(1)) {
+//
+//                }
+//            }
+//        });
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                key = null;
+                postList.clear();
+                postList_get.clear();
+                oldPost_get.clear();
+                oldestPostId=null;
                 loadData();
 
                 swipeRefreshLayout.setRefreshing(false);
@@ -281,29 +305,24 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public Query getData(String key) {
-        if (key == null){
-            return database.getReference().child("posts").orderByKey().limitToLast(5);
-        }
-        return database.getReference().child("posts").orderByKey().endAt(key).limitToLast(5);
-    }
-
     private void loadData() {
         PostAdapter postAdapter = new PostAdapter(postList,getContext());
-        getData(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            database.getReference().child("posts").limitToLast(initial_num).addListenerForSingleValueEvent(new ValueEventListener() {
             //        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                postList.clear();
+//                postList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Post post = dataSnapshot.getValue(Post.class);
                     post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
                     postList.add(0,post);
-                    key = dataSnapshot.getKey();
+                    postList_get.add(0,post);
+                    oldPost_get.add(dataSnapshot.getKey());
                 }
+                oldestPostId = oldPost_get.get(0);
                 dashboardRV.setAdapter(postAdapter);
                 dashboardRV.hideShimmerAdapter();
-                postAdapter.notifyDataSetChanged();
+//                postAdapter.notifyDataSetChanged();
             }
 
 
@@ -316,3 +335,4 @@ public class HomeFragment extends Fragment {
     }
 
 }
+
