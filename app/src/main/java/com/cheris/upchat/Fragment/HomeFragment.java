@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -42,16 +43,26 @@ import java.util.Date;
 public class HomeFragment extends Fragment {
 
     RecyclerView storyRV;
-    ShimmerRecyclerView dashboardRV;
     ArrayList<Story> storyList;
+
+    RoundedImageView addStoryImage;
+    ShimmerRecyclerView dashboardRV;
     ArrayList<Post> postList;
+    ArrayList<Post> postList_get;
+
     //    ImageView addstory;
     FirebaseDatabase database;
     FirebaseAuth auth;
     FirebaseStorage storage;
-    RoundedImageView addStoryImage;
+
     ActivityResultLauncher<String> galleryLauncher;
     ProgressDialog dialog;
+
+    // load more
+    boolean isLoading = false;
+    String key = null;
+    boolean isScrolling = false;
+    int currentItems, totalItems, scrollOutItems;
 
 // swipeRefreshLayout
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -88,7 +99,6 @@ public class HomeFragment extends Fragment {
 
         dashboardRV = view.findViewById(R.id.dashboardRV);
         dashboardRV.showShimmerAdapter();
-
 
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -148,6 +158,7 @@ public class HomeFragment extends Fragment {
         // Dashboard Recycler View
 
         postList = new ArrayList<>();
+        postList_get = new ArrayList<>();
 
         PostAdapter postAdapter = new PostAdapter(postList,getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -155,53 +166,50 @@ public class HomeFragment extends Fragment {
         dashboardRV.addItemDecoration(new DividerItemDecoration(dashboardRV.getContext(),DividerItemDecoration.HORIZONTAL));
         dashboardRV.setNestedScrollingEnabled(false);
 
-        database.getReference().child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
-//        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
+        loadData();
+
+        dashboardRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                postList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Post post = dataSnapshot.getValue(Post.class);
-                    post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
-                    postList.add(post);
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(!dashboardRV.canScrollVertically(1)) {
+                    database.getReference().child("posts").orderByKey().endAt(key).limitToLast(5).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            postList_get.clear(); //임시저장 위치
+                            postList.clear();
+                            for (DataSnapshot item : dataSnapshot.getChildren()) {
+                                Post post = dataSnapshot.getValue(Post.class);
+                                post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
+                                postList.add(0,post);
+                                postList_get.add(0,post);
+//                    oldPostList_get.add(dataSnapshot.getKey());
+                                key = dataSnapshot.getKey();
+                            }
+                            if (postList_get.size()>1){
+                            postList_get.remove(0);
+                            postList.addAll(postList_get);
+                            }
+                            dashboardRV.setAdapter(postAdapter);
+
+                            dashboardRV.hideShimmerAdapter();
+                            postAdapter.notifyDataSetChanged();
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+
+                    });
                 }
-                dashboardRV.setAdapter(postAdapter);
-
-                dashboardRV.hideShimmerAdapter();
-                postAdapter.notifyDataSetChanged();
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                database.getReference().child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    postList.clear();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Post post = dataSnapshot.getValue(Post.class);
-                        post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
-                        postList.add(post);
-                    }
-                    dashboardRV.setAdapter(postAdapter);
-
-                    dashboardRV.hideShimmerAdapter();
-                    postAdapter.notifyDataSetChanged();
-                }
-
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+                key = null;
+                loadData();
 
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -273,5 +281,38 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    public Query getData(String key) {
+        if (key == null){
+            return database.getReference().child("posts").orderByKey().limitToLast(5);
+        }
+        return database.getReference().child("posts").orderByKey().endAt(key).limitToLast(5);
+    }
+
+    private void loadData() {
+        PostAdapter postAdapter = new PostAdapter(postList,getContext());
+        getData(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            //        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                postList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Post post = dataSnapshot.getValue(Post.class);
+                    post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
+                    postList.add(0,post);
+                    key = dataSnapshot.getKey();
+                }
+                dashboardRV.setAdapter(postAdapter);
+                dashboardRV.hideShimmerAdapter();
+                postAdapter.notifyDataSetChanged();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 
 }

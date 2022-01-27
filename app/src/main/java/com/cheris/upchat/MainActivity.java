@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.cheris.upchat.Fragment.AddPostFragment;
 import com.cheris.upchat.Fragment.ChatFragment;
@@ -54,18 +53,22 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         MainActivity.this.setTitle("My Profile");
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         binding.toolbar.setVisibility(View.VISIBLE);
-        transaction.replace(R.id.container, homeFragment,"0");
-        transaction.commit();
+        fm.beginTransaction().add(R.id.container, profileFragment,"4").hide(profileFragment).commit();
+        fm.beginTransaction().add(R.id.container, chatFragment,"3").hide(chatFragment).commit();
+        fm.beginTransaction().add(R.id.container, addPostFragment,"2").hide(addPostFragment).commit();
+        fm.beginTransaction().add(R.id.container, notificationFragment,"1").hide(notificationFragment).commit();
+        fm.beginTransaction().add(R.id.container, homeFragment,"0").commit();
+
 
         //Assign variable
         bottomNavigationView = binding.bottomNavigation;
 
         // Add home fragment in deque list
         integerDeque.push(R.id.bn_home);
-        // Load home fragment
-        loadFragment(new HomeFragment());
+//        // Load home fragment
+//        changeVisibleFragment(homeFragment);
         // Set home as default fragment
         bottomNavigationView.setSelectedItemId(R.id.bn_home);
 
@@ -100,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
                         //Push selected id in deque list
                         integerDeque.push(id);
                         //Load fragment
-                        loadFragment(getFragment(item.getItemId()));
+//                        changeVisibleFragment(getSetFragment(item.getItemId()));
+                        getSetFragment(item.getItemId());
                         //return true
                         return true;
                     }
@@ -145,26 +149,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private Fragment getFragment(int itemId) {
+    private Fragment getSetFragment(int itemId) {
         switch (itemId) {
             case R.id.bn_home:
                 bottomNavigationView.getMenu().getItem(0).setChecked(true);
-                return new HomeFragment();
+                fm.beginTransaction().hide(active).show(homeFragment).addToBackStack(null).commit();
+                active = homeFragment;
+                return homeFragment;
             case R.id.bn_notification:
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
-                return new NotificationFragment();
+                fm.beginTransaction().hide(active).show(notificationFragment).addToBackStack(null).commit();
+                active = notificationFragment;
+                return notificationFragment;
             case R.id.bn_add:
                 bottomNavigationView.getMenu().getItem(2).setChecked(true);
                 binding.toolbar.setVisibility(View.GONE);
-                return new AddPostFragment();
+                fm.beginTransaction().hide(active).show(addPostFragment).addToBackStack(null).commit();
+                active = addPostFragment;
+                return addPostFragment;
             case R.id.bn_chat:
                 bottomNavigationView.getMenu().getItem(3).setChecked(true);
                 binding.toolbar.setVisibility(View.GONE);
-                return new ChatFragment();
+                fm.beginTransaction().hide(active).show(chatFragment).addToBackStack(null).commit();
+                active = chatFragment;
+                return chatFragment;
             case R.id.bn_profile:
                 bottomNavigationView.getMenu().getItem(4).setChecked(true);
                 binding.toolbar.setVisibility(View.VISIBLE);
-                return new ProfileFragment();
+                fm.beginTransaction().hide(active).show(profileFragment).addToBackStack(null).commit();
+                active = profileFragment;
+                return profileFragment;
         }
         //Set checked default home fragment
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
@@ -172,13 +186,13 @@ public class MainActivity extends AppCompatActivity {
         return new HomeFragment();
     }
 
-    private void loadFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container,fragment,fragment.getClass().getSimpleName())
-                .commit();
-
-    }
+//    private void changeVisibleFragment(Fragment fragment) {
+//        fm
+//                .beginTransaction().hide(active).show().addToBackStack(null)
+////                .replace(R.id.container,fragment,fragment.getClass().getSimpleName())
+//                .commit();
+//
+//    }
 
 
     @Override
@@ -211,7 +225,8 @@ public class MainActivity extends AppCompatActivity {
         if (!integerDeque.isEmpty()) {
             //When deque list is not empty
             //Load fragment
-            loadFragment(getFragment(integerDeque.peek()));
+//            changeVisibleFragment(getSetFragment(integerDeque.peek()));
+            getSetFragment(integerDeque.peek());
         } else {
             //When deque list is empty
 //            finish();
