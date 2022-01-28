@@ -5,6 +5,8 @@
     <string name="search">Search</string>
     <string name="notification">Notification</string>
     <string name="profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="option_title">title</string>
+    <string name="post_placeholder_text">What\'s on your mind?</string>
+    <string name="create_story">Create a Story</string>
+    <string name="my_profile">My Profile</string>
 </resources>
