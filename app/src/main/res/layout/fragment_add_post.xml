@@ -95,7 +95,7 @@
         android:background="@android:color/transparent"
         android:ems="10"
         android:gravity="top"
-        android:hint="What's on your mind?"
+        android:hint="@string/post_placeholder_text"
         android:inputType="textLongMessage|textMultiLine"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/postImage"

@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
-        MainActivity.this.setTitle("My Profile");
+        MainActivity.this.setTitle(R.string.my_profile);
 
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        binding.toolbar.setVisibility(View.VISIBLE);
+        binding.toolbar.setVisibility(View.GONE);
         fm.beginTransaction().add(R.id.container, profileFragment,"4").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.container, chatFragment,"3").hide(chatFragment).commit();
         fm.beginTransaction().add(R.id.container, addPostFragment,"2").hide(addPostFragment).commit();
@@ -153,12 +153,15 @@ public class MainActivity extends AppCompatActivity {
         switch (itemId) {
             case R.id.bn_home:
                 bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                binding.toolbar.setVisibility(View.GONE);
                 fm.beginTransaction().hide(active).show(homeFragment).addToBackStack(null).commit();
                 active = homeFragment;
                 return homeFragment;
             case R.id.bn_notification:
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                binding.toolbar.setVisibility(View.GONE);
                 fm.beginTransaction().hide(active).show(notificationFragment).addToBackStack(null).commit();
+
                 active = notificationFragment;
                 return notificationFragment;
             case R.id.bn_add:

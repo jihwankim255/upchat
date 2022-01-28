@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">업챗</string>
-    <string name="home">Home</string>
-    <string name="add">Add Post</string>
-    <string name="search">Search</string>
-    <string name="notification">Notification</string>
-    <string name="profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">홈</string>
+    <string name="add">글쓰기</string>
+    <string name="search">검색</string>
+    <string name="notification">알림</string>
+    <string name="profile">프로필</string>
+    <string name="option_title">제목</string>
+    <string name="post_placeholder_text">무슨 생각 중이신가요?</string>
+    <string name="create_story">스토리 작성</string>
+    <string name="my_profile">My 프로필</string>
 </resources>

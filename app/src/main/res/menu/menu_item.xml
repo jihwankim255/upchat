@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="title"
+    <item android:title="@string/option_title"
         android:id="@+id/setting"
-        android:icon="@drawable/ic_settings"
+        android:icon="@drawable/ic_logout"
         app:showAsAction="always"/>
+
 </menu>
