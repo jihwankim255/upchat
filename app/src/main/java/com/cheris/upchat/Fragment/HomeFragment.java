@@ -204,7 +204,7 @@ public class HomeFragment extends Fragment {
                                 dashboardRV.hideShimmerAdapter();
                                 postAdapter.notifyDataSetChanged();
                             } else {
-                                Toast.makeText(getActivity(), "마지막 포스트입니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.lastPost, Toast.LENGTH_SHORT).show();
                             }
                             dashboardRV.setAdapter(postAdapter);
 
@@ -309,7 +309,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void loadData() {
+    public void loadData() { //아래로 내렸을 때
         PostAdapter postAdapter = new PostAdapter(postList,getContext());
             database.getReference().child("posts").limitToLast(initial_num).addListenerForSingleValueEvent(new ValueEventListener() {
             //        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
@@ -327,6 +327,39 @@ public class HomeFragment extends Fragment {
                 dashboardRV.setAdapter(postAdapter);
                 dashboardRV.hideShimmerAdapter();
 //                postAdapter.notifyDataSetChanged();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public void loadData2() { //아래로 내렸을 때
+        PostAdapter postAdapter = new PostAdapter(postList,getContext());
+        database.getReference().child("posts").limitToLast(initial_num).addListenerForSingleValueEvent(new ValueEventListener() {
+            //        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                postList.clear();
+                postList_get.clear();
+                oldPost_get.clear();
+                oldestPostId=null;
+//                postList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Post post = dataSnapshot.getValue(Post.class);
+                    post.setPostId(dataSnapshot.getKey());  //may produce NullPointerException
+                    postList.add(0,post);
+                    postList_get.add(0,post);
+                    oldPost_get.add(dataSnapshot.getKey());
+                }
+                oldestPostId = oldPost_get.get(0);
+                dashboardRV.setAdapter(postAdapter);
+                dashboardRV.hideShimmerAdapter();
+//                postAdapter.notifyDataSetChanged();
+                nestedScrollView.scrollTo(0,0);
             }
 
 

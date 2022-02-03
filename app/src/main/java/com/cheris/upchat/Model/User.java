@@ -70,7 +70,7 @@ public class User {
         if (profile != null) {
             return profile;
         } else {  // 프사 설정 안했을 때
-            return ("https://firebasestorage.googleapis.com/v0/b/upchat-a0789.appspot.com/o/profile_image%2Fdefault_profile.jpg?alt=media&token=5e28932f-3872-4121-a975-051f597e8599");
+            return ("https://firebasestorage.googleapis.com/v0/b/upchat-a0789.appspot.com/o/profile_image%2Fdefault_profile.jpg?alt=media&token=e96d4a33-cc51-4f47-9097-b349735488de");
         }
 
     }

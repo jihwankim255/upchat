@@ -15,7 +15,7 @@
 
     <tab
         drawable="@drawable/ic_magnifier"
-        text="@string/search" />
+        text="@string/chat" />
 
     <tab
         drawable="@drawable/ic_user"
