@@ -16,9 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.cheris.upchat.MainActivity;
 import com.cheris.upchat.Model.Post;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
@@ -68,9 +68,12 @@ public class AddPostFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAddPostBinding.inflate(inflater, container, false);
 
+        String wait = getResources().getString(R.string.wait);
+        String postUploading = getResources().getString(R.string.postUploading);
+
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setTitle("Post Uploading");
-        dialog.setMessage("Please Wait...");
+        dialog.setTitle(postUploading);
+        dialog.setMessage(wait);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
 
@@ -145,8 +148,7 @@ public class AddPostFragment extends Fragment {
                         .child(FirebaseAuth.getInstance().getUid())
                         .child(new Date().getTime()+"");
                 if (uri == null) { // 사진 업로드를 안했을 때
-                    binding.postDescription.setVisibility(View.GONE);
-
+//                    binding.postDescription.setVisibility(View.GONE);
                     Post post = new Post();
                     post.setPostedBy(FirebaseAuth.getInstance().getUid());
                     post.setPostDescription(binding.postDescription.getText().toString());
@@ -158,6 +160,9 @@ public class AddPostFragment extends Fragment {
                         public void onSuccess(Void unused) {
                             dialog.dismiss();
                             Toast.makeText(getContext(), "Posted Successfully", Toast.LENGTH_SHORT).show();
+                            post.setPostedBy(null);
+                            post.setPostDescription("");
+                            post.setPostedAt(0);
                         }
                     });
                 } else {  // 사진 업로드를 했을 때
@@ -180,6 +185,11 @@ public class AddPostFragment extends Fragment {
                                         public void onSuccess(Void unused) {
                                             dialog.dismiss();
                                             Toast.makeText(getContext(), "Posted Successfully", Toast.LENGTH_SHORT).show();
+                                            post.setPostImage(null);
+                                            post.setPostedBy(null);
+                                            post.setPostDescription("");
+                                            post.setPostedAt(0);
+                                            binding.postBtn.setVisibility(View.GONE);
                                         }
                                     });
                                 }
@@ -187,10 +197,13 @@ public class AddPostFragment extends Fragment {
                         }
                     });
                 }
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new HomeFragment());
-
-
+                binding.postDescription.setText(""); // 공백으로
+                ((MainActivity)getActivity()).afterAddPostEvent();
+//                ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction().hide().show(new HomeFragment()).commit();
+//                ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction().detach(new HomeFragment());
+//                ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction().attach(new HomeFragment()).commit();
+//                ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction().attach(new HomeFragment()).commit();
+//                getActivity().getSupportFragmentManager().beginTransaction().hide(new AddPostFragment()).show(new HomeFragment()).commit();
             }
         });
 

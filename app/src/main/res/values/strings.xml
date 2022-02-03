@@ -2,11 +2,19 @@
     <string name="app_name">Upchat</string>
     <string name="home">Home</string>
     <string name="add">Add Post</string>
-    <string name="search">Search</string>
+    <string name="chat">Chatting</string>
     <string name="notification">Notification</string>
     <string name="profile">Profile</string>
     <string name="option_title">title</string>
     <string name="post_placeholder_text">What\'s on your mind?</string>
     <string name="create_story">Create a Story</string>
     <string name="my_profile">My Profile</string>
+    <string name="block">Block user</string>
+    <string name="report">Report user</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="blockDialog">Will you block %1$s?</string>
+    <string name="lastPost">This is the last post.</string>
+    <string name="wait">Please Wait...</string>
+    <string name="postUploading">Post uploading</string>
 </resources>

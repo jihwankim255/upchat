@@ -1,6 +1,7 @@
 package com.cheris.upchat.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -78,6 +80,49 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 //
 //                    }
 //                });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String blockUser = context.getResources().getString(R.string.block);
+                String reportUser = context.getResources().getString(R.string.report);
+                final CharSequence[] items = {blockUser, reportUser}; //, "(나가기)" "(즐겨찾기)","(알림 끄기)" ,
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+
+                builder.setTitle(user.getName());
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        switch (item) {
+                            case 0:
+                                AlertDialog.Builder builderBlock = new AlertDialog.Builder(v.getContext());
+                                builderBlock.setTitle(R.string.block).setMessage(String.format(context.getResources().getString(R.string.blockDialog),user.getName())).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+
+                                break;
+                            case 1:
+
+                                break;
+                            default:
+                                break;
+                        }
+
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

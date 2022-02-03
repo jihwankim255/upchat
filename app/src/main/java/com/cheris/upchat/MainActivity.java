@@ -52,9 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
         MainActivity.this.setTitle(R.string.my_profile);
-
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         binding.toolbar.setVisibility(View.GONE);
+
+        //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
         fm.beginTransaction().add(R.id.container, profileFragment,"4").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.container, chatFragment,"3").hide(chatFragment).commit();
         fm.beginTransaction().add(R.id.container, addPostFragment,"2").hide(addPostFragment).commit();
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         integerDeque.push(R.id.bn_home);
 //        // Load home fragment
 //        changeVisibleFragment(homeFragment);
+
+
         // Set home as default fragment
         bottomNavigationView.setSelectedItemId(R.id.bn_home);
 
@@ -111,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+
 //        binding.readableBottomBar.setOnItemSelectListener(new ReadableBottomBar.ItemSelectListener() {
 //            @Override
 //            public void onItemSelected(int i) {
@@ -149,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private Fragment getSetFragment(int itemId) {
+
+    public Fragment getSetFragment(int itemId) {  // private에서 변경
         switch (itemId) {
             case R.id.bn_home:
                 bottomNavigationView.getMenu().getItem(0).setChecked(true);
@@ -157,25 +162,28 @@ public class MainActivity extends AppCompatActivity {
                 fm.beginTransaction().hide(active).show(homeFragment).addToBackStack(null).commit();
                 active = homeFragment;
                 return homeFragment;
+
             case R.id.bn_notification:
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
                 binding.toolbar.setVisibility(View.GONE);
                 fm.beginTransaction().hide(active).show(notificationFragment).addToBackStack(null).commit();
-
                 active = notificationFragment;
                 return notificationFragment;
+
             case R.id.bn_add:
                 bottomNavigationView.getMenu().getItem(2).setChecked(true);
                 binding.toolbar.setVisibility(View.GONE);
                 fm.beginTransaction().hide(active).show(addPostFragment).addToBackStack(null).commit();
                 active = addPostFragment;
                 return addPostFragment;
+
             case R.id.bn_chat:
                 bottomNavigationView.getMenu().getItem(3).setChecked(true);
                 binding.toolbar.setVisibility(View.GONE);
                 fm.beginTransaction().hide(active).show(chatFragment).addToBackStack(null).commit();
                 active = chatFragment;
                 return chatFragment;
+
             case R.id.bn_profile:
                 bottomNavigationView.getMenu().getItem(4).setChecked(true);
                 binding.toolbar.setVisibility(View.VISIBLE);
@@ -242,6 +250,16 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("tag", tag);
 //        binding.readableBottomBar.selectItem(Integer.parseInt(tag));
 
+
+
+    }
+    public void afterAddPostEvent() {  // May produce PostList problem
+        fm.beginTransaction().hide(addPostFragment).show(homeFragment).addToBackStack(null).commit();
+        ((HomeFragment) getSupportFragmentManager().findFragmentByTag("0")).loadData2();
+//        ((HomeFragment) getSupportFragmentManager().findFragmentByTag("0")).g;
+
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        active = homeFragment;
 
 
     }
