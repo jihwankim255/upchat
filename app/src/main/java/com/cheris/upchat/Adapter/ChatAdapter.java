@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.cheris.upchat.ChatDetailActivity;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,12 +27,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
 
     ArrayList<User> list;
     Context context;
+
+    // For block user
+    FirebaseAuth auth;
+    FirebaseDatabase database;
 
     public ChatAdapter(ArrayList<User> list, Context context) {
         this.list = list;
@@ -40,7 +48,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.chat_rv_sample, parent, false);
-
+        auth = FirebaseAuth.getInstance();  // 할당부분이 맞는지 부정확
+        database = FirebaseDatabase.getInstance();
         return new ViewHolder(view);
     }
 
@@ -50,6 +59,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         Glide.with(context).load(user.getProfile()).placeholder(R.drawable.ic_profile).into(holder.image);
         holder.chatUserName.setText(user.getName());
 
+        // 최근 메세지
         FirebaseDatabase.getInstance().getReference().child("chats")
                 .child(FirebaseAuth.getInstance().getUid() + user.getUserID())
                 .orderByChild("timestamp")
@@ -100,7 +110,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                                 builderBlock.setTitle(R.string.block).setMessage(String.format(context.getResources().getString(R.string.blockDialog),user.getName())).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-
+                                        blockUser(user.getUserID());
                                     }
                                 }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                                     @Override
@@ -136,6 +146,55 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         });
 
     }
+
+    private void blockUser(String Uid) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uid",Uid);
+        database.getReference().child("Users").child(auth.getUid()).child("BlockedUsers").child(Uid).setValue(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {  // 차단 성공
+                        Toast.makeText(context, "Blocked Successfully.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {  // 차단 실패
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Failed: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+    private void unBlockUser(String Uid) {
+        database.getReference().child("Users").child(auth.getUid()).child("BlockedUsers").orderByChild(Uid).equalTo(Uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {  // BlockedUsers리스트에 있는 해당 Uid의 값을 불러온다
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                            if (dataSnapshot.exists()) {
+                                dataSnapshot.getRef().removeValue()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Toast.makeText(context, "Unblocked successfully.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(context, "Failed: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
 
     @Override
     public int getItemCount() {

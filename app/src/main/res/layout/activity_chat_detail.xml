@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Enter your Message"
+            android:hint="@string/enter_your_message"
             android:inputType="textPersonName"
             android:padding="10dp"
             android:layout_marginLeft="3dp"/>

@@ -17,4 +17,7 @@
     <string name="lastPost">This is the last post.</string>
     <string name="wait">Please Wait...</string>
     <string name="postUploading">Post uploading</string>
+    <string name="enter_your_message">Enter your Message</string>
+    <string name="create_post">Create Post</string>
+    <string name="add_to_your_post">Add to your post</string>
 </resources>

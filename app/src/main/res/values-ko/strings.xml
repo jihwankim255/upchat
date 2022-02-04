@@ -17,4 +17,7 @@
     <string name="lastPost">마지막 포스트입니다.</string>
     <string name="wait">잠시만 기다려주세요...</string>
     <string name="postUploading">포스트를 업로드하는 중입니다...</string>
+    <string name="enter_your_message">메시지를 입력하세요.</string>
+    <string name="create_post">글 작성</string>
+    <string name="add_to_your_post">이미지 첨부</string>
 </resources>
