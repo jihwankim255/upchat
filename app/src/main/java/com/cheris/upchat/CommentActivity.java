@@ -88,11 +88,15 @@ public class CommentActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
 //                Picasso.get()
-                Glide.with(CommentActivity.this)
-                        .load(user.getProfile())
-                        .placeholder(R.drawable.placeholder)
-                        .into(binding.notificationProfile); // 왜이러는지모름
-                binding.name.setText(user.getName());
+                try {
+                    Glide.with(CommentActivity.this)
+                            .load(user.getProfile())
+                            .placeholder(R.drawable.placeholder)
+                            .into(binding.notificationProfile); // 왜이러는지모름
+                    binding.name.setText(user.getName());
+                } catch (Exception e) {
+                    
+                }
 
             }
 

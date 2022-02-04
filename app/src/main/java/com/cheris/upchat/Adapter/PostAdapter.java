@@ -2,6 +2,7 @@ package com.cheris.upchat.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,18 +73,34 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             holder.binding.postDescription.setVisibility(View.VISIBLE);
         }
         // 알림
-        FirebaseDatabase.getInstance().getReference().child("Users")
+        FirebaseDatabase.getInstance().getReference().child("Users")  //
                 .child(model.getPostedBy()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
+                try {
+                    User user = snapshot.getValue(User.class);
 //                Picasso.get()
-                Glide.with(context)
-                        .load(user.getProfile())
-                        .placeholder(R.drawable.placeholder)
-                        .into(holder.binding.notificationProfile);
-                holder.binding.userName.setText(user.getName());
-                holder.binding.bio.setText(user.getProfession());
+                    Glide.with(context)
+                            .load(user.getProfile())
+                            .placeholder(R.drawable.placeholder)
+                            .into(holder.binding.notificationProfile);
+                    holder.binding.userName.setText(user.getName());
+                    holder.binding.bio.setText(user.getProfession());
+                } catch (Exception e) {
+                    Glide.with(context)
+                            .load("https://firebasestorage.googleapis.com/v0/b/upchat-a0789.appspot.com/o/profile_image%2Fdefault_profile.jpg?alt=media&token=e96d4a33-cc51-4f47-9097-b349735488de")
+                            .placeholder(R.drawable.placeholder)
+                            .into(holder.binding.notificationProfile);
+                    holder.binding.userName.setText("(Deleted user)");
+                    holder.binding.userName.setTypeface(holder.binding.userName.getTypeface(), Typeface.NORMAL);
+                    holder.binding.bio.setText("");
+                    holder.binding.postImage.setVisibility(View.GONE);
+                    holder.binding.postDescription.setText("");
+                    holder.binding.like.setClickable(false);
+                    holder.binding.comment.setClickable(false);
+                    holder.binding.share.setClickable(false);
+
+                }
 
             }
 
