@@ -1,13 +1,18 @@
 package com.cheris.upchat.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,13 +21,14 @@ import com.cheris.upchat.Model.Notification;
 import com.cheris.upchat.Model.Post;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
-import com.cheris.upchat.databinding.DashboardRvSampleBinding;
+import com.cheris.upchat.databinding.RvSamplePostBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +40,10 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     ArrayList<Post> list;
     Context context;
 
+    FirebaseAuth auth;
+    FirebaseStorage storage;
+    FirebaseDatabase database;
+
     // Create constructor
     public PostAdapter(ArrayList<Post> list, Context context) {
         this.list = list;
@@ -44,7 +54,10 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Initialize view
-        View view = LayoutInflater.from(context).inflate(R.layout.dashboard_rv_sample, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_sample_post, parent, false);
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        storage = FirebaseStorage.getInstance();
         return new viewHolder(view);
     }
 
@@ -66,8 +79,9 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
         holder.binding.like.setText(model.getPostLike()+"");
         holder.binding.comment.setText(model.getCommentCount()+"");
         String description = model.getPostDescription();
-        if (description.equals("")){
+        if (description.trim().length() < 5){
             holder.binding.postDescription.setVisibility(View.GONE);
+
         } else {
             holder.binding.postDescription.setText(model.getPostDescription());
             holder.binding.postDescription.setVisibility(View.VISIBLE);
@@ -167,8 +181,87 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 
             }
         });
+        // 더보기 버튼
+        holder.binding.btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context,v);
+                popupMenu.getMenuInflater().inflate(R.menu.post_menu,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.report:
+                                Toast.makeText(context,"신고",Toast.LENGTH_SHORT).show();
 
+                                break;
+                            case R.id.hide:
+                                Toast.makeText(context,"채팅하기",Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.delete:
+                                Toast.makeText(context,"삭제",Toast.LENGTH_SHORT).show();
+                                AlertDialog alertbox = new AlertDialog.Builder(context)
+                                        .setMessage("Do you want to delete this post?")
+                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                return;
+                                            }
+                                        }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                database.getReference().child("posts").child(model.getPostId()).removeValue();
+                                                try {
+                                                    storage.getReference().child("posts").child(""+model.getPostedAt()).delete();
+                                                } catch (Exception e){
+
+                                                }
+
+
+                                                notifyItemRemoved(holder.getAdapterPosition());
+                                            }
+                                        }).show();
+                                break;
+                            default:
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                // 글쓴이와 로그인유저가 동일하면 삭제하기, 다르면 신고하기
+                if (auth.getUid().equals( model.getPostedBy())) {
+                    popupMenu.getMenu().getItem(0).setVisible(false);
+                    popupMenu.getMenu().getItem(1).setVisible(false);
+                } else  {
+                    popupMenu.getMenu().getItem(2).setVisible(false);
+                }
+                popupMenu.show();//Popup Menu 보이기
+
+            }
+        });
+
+        // 커멘트 Activity로 이동하는 버튼
         holder.binding.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("postId",model.getPostId());
+                intent.putExtra("postedBy", model.getPostedBy());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+        holder.binding.postDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("postId",model.getPostId());
+                intent.putExtra("postedBy", model.getPostedBy());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+        holder.binding.empty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CommentActivity.class);
@@ -188,11 +281,11 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 
     public class viewHolder extends RecyclerView.ViewHolder{
 
-        DashboardRvSampleBinding binding;
+        RvSamplePostBinding binding;
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             // 이부분 안쓰면 nullPointerException 뜸. rv_sample과 연결해주는 부분
-            binding = DashboardRvSampleBinding.bind(itemView);
+            binding = RvSamplePostBinding.bind(itemView);
 
 
         }

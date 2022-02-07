@@ -33,11 +33,11 @@ public class ChatDetailAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == SENDER_VIEW_TYPE)
         {
-            View view = LayoutInflater.from(context).inflate(R.layout.sample_sender, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.rv_sample_sender, parent, false);
             return new SenderViewHolder(view);
         }
         else {
-            View view = LayoutInflater.from(context).inflate(R.layout.sample_receiver, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.rv_sample_receiver, parent, false);
             return new ReceiverViewHolder(view);
         }
     }

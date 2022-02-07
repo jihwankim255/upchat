@@ -16,7 +16,7 @@ import com.cheris.upchat.CommentActivity;
 import com.cheris.upchat.Model.Notification;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
-import com.cheris.upchat.databinding.NotificationRvSampleBinding;
+import com.cheris.upchat.databinding.RvSampleNotificationBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,7 +40,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.notification_rv_sample,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_sample_notification,parent,false);
 
 
         return new viewHolder(view);
@@ -116,11 +116,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class viewHolder extends RecyclerView.ViewHolder {
 
-        NotificationRvSampleBinding binding;
+        RvSampleNotificationBinding binding;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            binding = NotificationRvSampleBinding.bind(itemView);
+            binding = RvSampleNotificationBinding.bind(itemView);
         }
     }
 }

@@ -12,7 +12,9 @@ import com.bumptech.glide.Glide;
 import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
-import com.cheris.upchat.databinding.FriendRvSampleBinding;
+//import com.cheris.upchat.databinding.FriendRvSampleBinding;
+import com.cheris.upchat.databinding.RvSampleFriendBinding;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +40,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.view
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.friend_rv_sample,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_sample_friend,parent,false);
         auth = FirebaseAuth.getInstance();  // 할당부분이 맞는지 부정확
         database = FirebaseDatabase.getInstance();
         return new viewHolder(view);
@@ -82,10 +84,10 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.view
     public class viewHolder extends RecyclerView.ViewHolder {
 
 
-        FriendRvSampleBinding binding;
+        RvSampleFriendBinding binding;
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            binding = FriendRvSampleBinding.bind(itemView);
+            binding = RvSampleFriendBinding.bind(itemView);
 
         }
     }
