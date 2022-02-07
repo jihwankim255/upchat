@@ -113,7 +113,7 @@ public class AddPostFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String description = binding.postDescription.getText().toString();
                 // post가 비지않았을때 버튼을 활성화
-                if (!description.isEmpty()) {
+                if (!(description.trim().length()<5)) {
                     binding.postBtn.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.follow_btn_bg));
                     binding.postBtn.setTextColor(getContext().getResources().getColor(R.color.white));
                     binding.postBtn.setEnabled(true);
@@ -144,15 +144,16 @@ public class AddPostFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.show();
+                final long postDate = new Date().getTime();
                 final StorageReference reference = storage.getReference().child("posts")
                         .child(FirebaseAuth.getInstance().getUid())
-                        .child(new Date().getTime()+"");
+                        .child(postDate+"");
                 if (uri == null) { // 사진 업로드를 안했을 때
 //                    binding.postDescription.setVisibility(View.GONE);
                     Post post = new Post();
                     post.setPostedBy(FirebaseAuth.getInstance().getUid());
                     post.setPostDescription(binding.postDescription.getText().toString());
-                    post.setPostedAt(new Date().getTime());
+                    post.setPostedAt(postDate);
                     database.getReference().child("posts")
                             .push()
                             .setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -176,7 +177,7 @@ public class AddPostFragment extends Fragment {
                                     post.setPostImage(uri.toString());
                                     post.setPostedBy(FirebaseAuth.getInstance().getUid());
                                     post.setPostDescription(binding.postDescription.getText().toString());
-                                    post.setPostedAt(new Date().getTime());
+                                    post.setPostedAt(postDate);
 
                                     database.getReference().child("posts")
                                             .push()

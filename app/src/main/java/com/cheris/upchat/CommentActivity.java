@@ -80,7 +80,7 @@ public class CommentActivity extends AppCompatActivity {
 
             }
         });
-
+        //
         database.getReference()
                 .child("Users")
                 .child(postedBy).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -95,7 +95,7 @@ public class CommentActivity extends AppCompatActivity {
                             .into(binding.notificationProfile); // 왜이러는지모름
                     binding.name.setText(user.getName());
                 } catch (Exception e) {
-                    
+                    //???
                 }
 
             }

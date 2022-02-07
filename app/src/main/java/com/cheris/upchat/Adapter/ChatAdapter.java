@@ -47,7 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.chat_rv_sample, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_sample_chat, parent, false);
         auth = FirebaseAuth.getInstance();  // 할당부분이 맞는지 부정확
         database = FirebaseDatabase.getInstance();
         return new ViewHolder(view);

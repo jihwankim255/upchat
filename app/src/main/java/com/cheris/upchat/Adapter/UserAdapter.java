@@ -15,7 +15,7 @@ import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.Notification;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
-import com.cheris.upchat.databinding.UserSampleBinding;
+import com.cheris.upchat.databinding.RvSampleFollowerBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +40,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder>{
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.user_sample, parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_sample_follower, parent,false);
         return new viewHolder(view);
     }
 
@@ -135,11 +135,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder>{
     }
 
     public class viewHolder extends RecyclerView.ViewHolder{
-        UserSampleBinding binding;
+        RvSampleFollowerBinding binding;
         public viewHolder(@NonNull View itemView) {
             super(itemView);
 
-            binding = UserSampleBinding.bind(itemView);
+            binding = RvSampleFollowerBinding.bind(itemView);
         }
     }
 }

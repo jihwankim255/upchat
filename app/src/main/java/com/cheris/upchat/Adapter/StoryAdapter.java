@@ -14,7 +14,7 @@ import com.cheris.upchat.Model.Story;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.Model.UserStories;
 import com.cheris.upchat.R;
-import com.cheris.upchat.databinding.StoryRvDesignBinding;
+import com.cheris.upchat.databinding.RvSampleStoryBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -39,7 +39,7 @@ public class StoryAdapter extends  RecyclerView.Adapter<StoryAdapter.viewHolder>
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.story_rv_design,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_sample_story,parent,false);
         return new viewHolder(view);
     }
 
@@ -129,11 +129,11 @@ public class StoryAdapter extends  RecyclerView.Adapter<StoryAdapter.viewHolder>
 
     public class viewHolder extends RecyclerView.ViewHolder{
 
-        StoryRvDesignBinding binding;
+        RvSampleStoryBinding binding;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            binding = StoryRvDesignBinding.bind(itemView);
+            binding = RvSampleStoryBinding.bind(itemView);
 
         }
     }

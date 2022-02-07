@@ -7,18 +7,20 @@
     <string name="profile">프로필</string>
     <string name="option_title">제목</string>
     <string name="post_placeholder_text">무슨 생각 중이신가요?</string>
-    <string name="create_story">스토리 작성</string>
+    <string name="create_story">Add</string>
     <string name="my_profile">My 프로필</string>
     <string name="block">차단하기</string>
     <string name="report">신고하기</string>
     <string name="yes">확인</string>
     <string name="no">취소</string>
     <string name="blockDialog">%1$s님을 차단하시겠습니까?</string>
-    <string name="lastPost">마지막 포스트입니다.</string>
+    <string name="lastPost">마지막 포스트입니다</string>
     <string name="wait">잠시만 기다려주세요...</string>
     <string name="postUploading">포스트를 업로드하는 중입니다...</string>
-    <string name="enter_your_message">메시지를 입력하세요.</string>
+    <string name="enter_your_message">메시지를 입력하세요</string>
     <string name="create_post">글 작성</string>
     <string name="add_to_your_post">이미지 첨부</string>
-    <string name="express_yourself">좋아하는 분야를 소개해보세요.</string>
+    <string name="express_yourself">좋아하는 분야를 소개해보세요</string>
+    <string name="hide">숨기기</string>
+    <string name="delete">삭제하기</string>
 </resources>
