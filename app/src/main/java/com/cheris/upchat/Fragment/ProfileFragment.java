@@ -111,7 +111,7 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
+        //followers 목록에서 가져와서 recyclerview로 보여주는 부분
         database.getReference().child("Users")
                 .child(auth.getUid())
                 .child("followers").addValueEventListener(new ValueEventListener() {

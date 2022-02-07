@@ -293,7 +293,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="Leave any phrases or favorite things to express yourself."
+        android:text="@string/express_yourself"
         android:textSize="@dimen/_14font_mdp"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
