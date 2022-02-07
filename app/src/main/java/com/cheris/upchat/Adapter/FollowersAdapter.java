@@ -13,6 +13,7 @@ import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
 import com.cheris.upchat.databinding.FriendRvSampleBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,6 +26,10 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.view
     ArrayList<Follow> list;
     Context context;
 
+    // for deleted user
+    FirebaseAuth auth;
+    FirebaseDatabase database;
+
     public FollowersAdapter(ArrayList<Follow> list, Context context) {
         this.list = list;
         this.context = context;
@@ -34,6 +39,8 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.view
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.friend_rv_sample,parent,false);
+        auth = FirebaseAuth.getInstance();  // 할당부분이 맞는지 부정확
+        database = FirebaseDatabase.getInstance();
         return new viewHolder(view);
     }
 
@@ -48,15 +55,16 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.view
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
 //                Picasso.get()
-                if (user.getProfile() != null) {
+                try {
                     Glide.with(context)
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
                             .into(holder.binding.notificationProfile);
-                } else {
-
+                } catch (Exception e) {
+                    // profile을 get할 수 없으면 해당 follower를 삭제
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("Users").child(auth.getUid()).child("followers").child(follow.getFollowedBy()).removeValue();
                 }
-
             }
 
             @Override
