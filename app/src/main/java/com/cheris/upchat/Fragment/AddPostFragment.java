@@ -200,11 +200,6 @@ public class AddPostFragment extends Fragment {
                 }
                 binding.postDescription.setText(""); // 공백으로
                 ((MainActivity)getActivity()).afterAddPostEvent();
-//                ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction().hide().show(new HomeFragment()).commit();
-//                ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction().detach(new HomeFragment());
-//                ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction().attach(new HomeFragment()).commit();
-//                ((MainActivity)getActivity()).getSupportFragmentManager().beginTransaction().attach(new HomeFragment()).commit();
-//                getActivity().getSupportFragmentManager().beginTransaction().hide(new AddPostFragment()).show(new HomeFragment()).commit();
             }
         });
 
