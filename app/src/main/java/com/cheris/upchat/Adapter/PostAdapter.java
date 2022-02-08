@@ -210,9 +210,9 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                                         }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                database.getReference().child("posts").child(model.getPostId()).removeValue();
                                                 try {
                                                     storage.getReference().child("posts").child(""+model.getPostedAt()).delete();
+                                                    database.getReference().child("posts").child(model.getPostId()).removeValue();
                                                 } catch (Exception e){
 
                                                 }
