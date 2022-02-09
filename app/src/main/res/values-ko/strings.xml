@@ -21,6 +21,6 @@
     <string name="create_post">글 작성</string>
     <string name="add_to_your_post">이미지 첨부</string>
     <string name="express_yourself">좋아하는 분야를 소개해보세요</string>
-    <string name="hide">숨기기</string>
+    <string name="chatting">채팅하기</string>
     <string name="delete">삭제하기</string>
 </resources>

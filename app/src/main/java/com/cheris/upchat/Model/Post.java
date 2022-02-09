@@ -1,5 +1,7 @@
 package com.cheris.upchat.Model;
 
+import java.util.HashMap;
+
 public class Post {
 
     private String postId;     // 올린 사람 Id
@@ -7,16 +9,10 @@ public class Post {
     private String postedBy;    // 올린 사람
     private String postDescription;  // 올린 글
     private long postedAt;        // 올린 날짜
-    private int postLike;         //글에 달린 좋아요
     private int commentCount;     //글에 달린 댓글 수
+    public int postLike;         //글에 달린 좋아요
+    public HashMap<String, Boolean> likes;          // 글에 좋아요 한 사람들
 
-    public int getPostLike() {
-        return postLike;
-    }
-
-    public void setPostLike(int postLike) {
-        this.postLike = postLike;
-    }
 
 
     public Post(String postId, String postImage, String postedBy, String postDescription, long postedAt) {
@@ -76,5 +72,21 @@ public class Post {
 
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public int getPostLike() {
+        return postLike;
+    }
+
+    public void setPostLike(int postLike) {
+        this.postLike = postLike;
+    }
+
+    public HashMap<String, Boolean> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(HashMap<String, Boolean> likes) {
+        this.likes = likes;
     }
 }
