@@ -8,11 +8,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,20 +21,18 @@ import com.cheris.upchat.Model.Post;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
 import com.cheris.upchat.databinding.RvSamplePostBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
 
-public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
+public class PostAdapter2 extends  RecyclerView.Adapter<PostAdapter2.viewHolder>{
 
     // Initialize variable
     ArrayList<Post> list;
@@ -46,7 +43,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     FirebaseDatabase database;
 
     // Create constructor
-    public PostAdapter(ArrayList<Post> list, Context context) {
+    public PostAdapter2(ArrayList<Post> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -65,10 +62,8 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         // Initialize main data
+
         Post model = list.get(position);
-
-
-
 //        Picasso.get()
         try {
             if (model.getPostImage() != null) {
@@ -81,6 +76,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             }
         } catch (Exception e) {}
 
+        holder.binding.like.setText(model.getPostLike()+"");
         holder.binding.comment.setText(model.getCommentCount()+"");
         String description = model.getPostDescription();
         if (description.trim().length() < 5){
@@ -128,7 +124,25 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             }
         });
 
+        //   색깔을 정함
+        FirebaseDatabase.getInstance().getReference()
+                .child("posts")
+                .child(model.getPostId())
+                .child("likes")
+                .child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){  // 처음 불러올때 좋아요 데이터가있으면
+                    holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_2,0,0,0);
+                } else { //없으면
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         // 더보기 버튼
         holder.binding.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,40 +154,14 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.report:
-                                final EditText et = new EditText(context);
+                                Toast.makeText(context,"신고",Toast.LENGTH_SHORT).show();
 
-                                final AlertDialog.Builder alt_bld = new AlertDialog.Builder(context);
-
-                                alt_bld.setTitle("닉네임 변경")
-
-                                        .setMessage("변경할 닉네임을 입력하세요")
-
-                                        .setCancelable(false)
-
-                                        .setView(et)
-
-                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-
-                                            public void onClick(DialogInterface dialog, int id) {
-
-                                                String value = et.getText().toString();
-
-                                                database.getReference().child("reports").child(model.getPostedBy()).child("reportCount").setValue(value);
-
-//                                                database.getReference().child("reports").child(model.getPostedBy()).child(model.getPostId()).setValue(value);
-                                                // 신고누적 수, 신고자, 신고 사유
-
-                                            }
-
-                                        });
-
-                                AlertDialog alert = alt_bld.create();
-
-                                alert.show();
                                 break;
                             case R.id.hide:
+                                Toast.makeText(context,"채팅하기",Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.delete:
+                                Toast.makeText(context,"삭제",Toast.LENGTH_SHORT).show();
                                 AlertDialog alertbox = new AlertDialog.Builder(context)
                                         .setMessage("Do you want to delete this post?")
                                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -246,16 +234,47 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             }
         });
 
-        // 좋아요 버튼
         holder.binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(context, ""+ database.getReference().child("posts").child(model.getPostId()), Toast.LENGTH_SHORT).show();
+                if (!model.getLikes().containsKey(auth.getUid())){
+                    Toast.makeText(context, ""+ model.getLikes(), Toast.LENGTH_SHORT).show();
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("posts")
+                            .child(model.getPostId())
+                            .child("likes")
+                            .child(FirebaseAuth.getInstance().getUid())
+                            .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("posts")
+                                    .child(model.getPostId())
+                                    .child("postLike")
+                                    .setValue(model.getPostLike() + 1);
+
+                        }
+                    });
+                } else {
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("posts")
+                            .child(model.getPostId())
+                            .child("likes")
+                            .child(FirebaseAuth.getInstance().getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("posts")
+                                    .child(model.getPostId())
+                                    .child("postLike")
+                                    .setValue(model.getPostLike() - 1);
+                        }
+                    });
+                }
             }
         });
 
     }
-
 
 
     @Override

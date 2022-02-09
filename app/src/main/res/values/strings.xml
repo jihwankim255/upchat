@@ -21,6 +21,6 @@
     <string name="create_post">Create Post</string>
     <string name="add_to_your_post">Add to your post</string>
     <string name="express_yourself">Leave any phrases or favorite things to express yourself.</string>
-    <string name="hide">hide</string>
+    <string name="chatting">chatting</string>
     <string name="delete">delete</string>
 </resources>

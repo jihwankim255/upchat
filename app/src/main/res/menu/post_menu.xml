@@ -5,7 +5,7 @@
         android:title="@string/report" />
     <item
         android:id="@+id/hide"
-        android:title="@string/hide" />
+        android:title="@string/chatting" />
     <item
         android:id="@+id/delete"
         android:title="@string/delete" />
