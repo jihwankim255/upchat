@@ -8,6 +8,7 @@ public class User {
     private String profile;
     private String lastMessage;
     private String blockUser;
+    private String userLevel;
 
     public User() {
 
@@ -106,5 +107,10 @@ public class User {
     public String getLastMessage() { return lastMessage; }
 
     public void setLastMessage(String lastMessage) { this.lastMessage = lastMessage; }
+
+    public String getUserLevel() {
+        return userLevel;
+    }
+
 
 }
