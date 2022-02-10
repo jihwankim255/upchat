@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
@@ -44,6 +45,8 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     FirebaseAuth auth;
     FirebaseStorage storage;
     FirebaseDatabase database;
+
+    Boolean likeState;
 
     // Create constructor
     public PostAdapter(ArrayList<Post> list, Context context) {
@@ -67,9 +70,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
         // Initialize main data
         Post model = list.get(position);
 
-
-
-//        Picasso.get()
+        // 포스트 이미지 삽입
         try {
             if (model.getPostImage() != null) {
                 Glide.with(context)
@@ -80,8 +81,15 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                 holder.binding.postImage.setVisibility(View.GONE);
             }
         } catch (Exception e) {}
-
-        holder.binding.comment.setText(model.getCommentCount()+"");
+        // 하트 색 감지
+        if (model.likes.containsKey(auth.getUid())) {
+            holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_2,0,0,0);
+            likeState = true;
+        } else {
+            likeState = false;
+        }
+        holder.binding.comment.setText(model.getCommentCount()+"");   //커멘트 숫자 가져오기기
+       holder.binding.like.setText(model.getPostLike()+"");     //좋아요 숫자 가져오기
         String description = model.getPostDescription();
         if (description.trim().length() < 5){
             holder.binding.postDescription.setVisibility(View.GONE);
@@ -129,6 +137,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
         });
 
 
+
         // 더보기 버튼
         holder.binding.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,24 +150,32 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                         switch (item.getItemId()){
                             case R.id.report:
                                 final EditText et = new EditText(context);
-
                                 final AlertDialog.Builder alt_bld = new AlertDialog.Builder(context);
-
-                                alt_bld.setTitle("닉네임 변경")
-
-                                        .setMessage("변경할 닉네임을 입력하세요")
-
-                                        .setCancelable(false)
-
+                                alt_bld.setTitle("신고")
+                                        .setMessage("신고 사유를 입력해주세요")
+                                        .setCancelable(true)
                                         .setView(et)
+                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
 
-                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-
+                                            }
+                                        })
+                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
-
                                                 String value = et.getText().toString();
+                                                Long time = new Date().getTime();
+                                                //신고한 정보 저장
+                                                database.getReference().child("reports")
+                                                        .child(model.getPostedBy()) //신고 당한 유저
+                                                        .child(model.getPostId())       //신고 당한 포스트
+                                                        .child(auth.getUid())           // 신고자
+                                                        .child(time.toString())         // 신고한 날짜
+                                                        .setValue(value);               // 신고 사유
+                                                // 신고한 포스트를 숨김 목록에 추가
 
-                                                database.getReference().child("reports").child(model.getPostedBy()).child("reportCount").setValue(value);
+
+                                                //신고당한 횟수 추가
 
 //                                                database.getReference().child("reports").child(model.getPostedBy()).child(model.getPostId()).setValue(value);
                                                 // 신고누적 수, 신고자, 신고 사유
@@ -202,7 +219,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                         return false;
                     }
                 });
-                // 글쓴이와 로그인유저가 동일하면 삭제하기, 다르면 신고하기
+                // 글쓴이와 로그인유저가 동일하면 삭제하기 버튼, 다르면 신고하기 버튼이 표시
                 if (auth.getUid().equals( model.getPostedBy())) {
                     popupMenu.getMenu().getItem(0).setVisible(false);
                     popupMenu.getMenu().getItem(1).setVisible(false);
@@ -213,6 +230,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 
             }
         });
+
 
         // 커멘트 Activity로 이동하는 버튼
         holder.binding.comment.setOnClickListener(new View.OnClickListener() {
@@ -246,14 +264,57 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             }
         });
 
+
+
         // 좋아요 버튼
         holder.binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(context, ""+ database.getReference().child("posts").child(model.getPostId()), Toast.LENGTH_SHORT).show();
+                onStarClicked(database.getReference().child("posts").child(model.getPostId()));
+                if (likeState) {
+                    Toast.makeText(context, "눌려있는 경우 ", Toast.LENGTH_SHORT).show();
+                    holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like,0,0,0);
+                    holder.binding.like.setText((model.getPostLike()-1)+"");
+                    likeState = false;
+                } else {
+                    holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_2,0,0,0);
+                    Toast.makeText(context, "안 눌려있는 경우 ", Toast.LENGTH_SHORT).show();
+                    holder.binding.like.setText((model.getPostLike()+1)+"");
+                    likeState = true;
+                }
             }
         });
+    }
 
+    private void onStarClicked(DatabaseReference postRef) {
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Post post = mutableData.getValue(Post.class);
+                if (post == null) {
+                    return Transaction.success(mutableData);
+                }
+                // 좋아요 누른 사람 확인
+                if (post.getLikes().containsKey(auth.getUid())) {
+                    // 좋아요 취소
+                    post.setPostLike(post.getPostLike() -1);
+                    post.getLikes().remove(auth.getUid());
+                } else {
+                    // Star the post and add self to stars
+                    post.setPostLike(post.getPostLike() +1);
+                    post.getLikes().put(auth.getUid(),true);
+                }
+
+                // Set value and report transaction success
+                mutableData.setValue(post);
+                return Transaction.success(mutableData);
+            }
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean committed,
+                                   DataSnapshot currentData) {
+                // Transaction completed
+            }
+        });
     }
 
 

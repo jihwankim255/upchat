@@ -1,5 +1,6 @@
 package com.cheris.upchat.Fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.cheris.upchat.Adapter.FollowersAdapter;
+import com.cheris.upchat.AdminActivity;
 import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
@@ -70,6 +72,24 @@ public class ProfileFragment extends Fragment {
 //        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 //        recyclerView = view.findViewById(R.id.friendRV);
+        database.getReference().child("Users").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    User user = snapshot.getValue(User.class);
+
+                    if (user.getUserLevel()!=null && user.getUserLevel().equals("admin")){
+                        binding.btnAdmin.setVisibility(View.VISIBLE);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         list = new ArrayList<>();
 //
@@ -174,6 +194,13 @@ public class ProfileFragment extends Fragment {
 
                 }
 
+            }
+        });
+        binding.btnAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AdminActivity.class);
+                startActivity(intent);
             }
         });
 
