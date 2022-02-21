@@ -10,7 +10,7 @@
     <string name="create_story">Add</string>
     <string name="my_profile">My 프로필</string>
     <string name="block">차단하기</string>
-    <string name="report">신고하기</string>
+    <string name="report_post">신고하기</string>
     <string name="yes">확인</string>
     <string name="no">취소</string>
     <string name="blockDialog">%1$s님을 차단하시겠습니까?</string>
@@ -23,4 +23,9 @@
     <string name="express_yourself">좋아하는 분야를 소개해보세요</string>
     <string name="chatting">채팅하기</string>
     <string name="delete">삭제하기</string>
+    <string name="report">신고</string>
+    <string name="reported_for">신고 사유를 입력해주세요</string>
+    <string name="delete_post">이 글을 삭제하시겠습니까??</string>
+    <string name="delete_success">"글이 삭제되었습니다"</string>
+    <string name="report_success">글을 신고하였습니다</string>
 </resources>

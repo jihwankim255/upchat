@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/report"
-        android:title="@string/report" />
+        android:title="@string/report_post" />
     <item
         android:id="@+id/hide"
         android:title="@string/chatting" />

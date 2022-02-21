@@ -144,7 +144,7 @@ public class PostAdapter2 extends  RecyclerView.Adapter<PostAdapter2.viewHolder>
             }
         });
         // 더보기 버튼
-        holder.binding.btnMore.setOnClickListener(new View.OnClickListener() {
+        holder.binding.btnSiren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupMenu popupMenu = new PopupMenu(context,v);

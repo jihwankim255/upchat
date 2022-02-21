@@ -10,7 +10,7 @@
     <string name="create_story">Create a Story</string>
     <string name="my_profile">My Profile</string>
     <string name="block">Block user</string>
-    <string name="report">Report user</string>
+    <string name="report_post">Report post</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="blockDialog">Will you block %1$s?</string>
@@ -23,4 +23,9 @@
     <string name="express_yourself">Leave any phrases or favorite things to express yourself.</string>
     <string name="chatting">chatting</string>
     <string name="delete">delete</string>
+    <string name="report">report</string>
+    <string name="reported_for">Please enter the reason for reporting</string>
+    <string name="delete_post">Do you want to delete this post?</string>
+    <string name="delete_success">"The post has been deleted."</string>
+    <string name="report_success">The post has been reported</string>
 </resources>
