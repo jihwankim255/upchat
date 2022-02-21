@@ -5,11 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,7 +44,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     FirebaseStorage storage;
     FirebaseDatabase database;
 
-    Boolean likeState;
+
 
     // Create constructor
     public PostAdapter(ArrayList<Post> list, Context context) {
@@ -69,7 +67,8 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         // Initialize main data
         Post model = list.get(position);
-
+        final int[] postLike = {model.getPostLike()};
+        final int[] likeState = new int[1];
         // 포스트 이미지 삽입
         try {
             if (model.getPostImage() != null) {
@@ -84,9 +83,12 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
         // 하트 색 감지
         if (model.likes.containsKey(auth.getUid())) {
             holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_2,0,0,0);
-            likeState = true;
+            likeState[0] = 1;
+//            Toast.makeText(context, ""+ likeState[0], Toast.LENGTH_SHORT).show();
         } else {
-            likeState = false;
+            holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like,0,0,0);
+            likeState[0] = 0;
+//            Toast.makeText(context, ""+likeState[0], Toast.LENGTH_SHORT).show();
         }
         holder.binding.comment.setText(model.getCommentCount()+"");   //커멘트 숫자 가져오기기
        holder.binding.like.setText(model.getPostLike()+"");     //좋아요 숫자 가져오기
@@ -135,101 +137,123 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 
             }
         });
-
-
-
-        // 더보기 버튼
-        holder.binding.btnMore.setOnClickListener(new View.OnClickListener() {
+        // 글삭제 버튼
+        holder.binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(context,v);
-                popupMenu.getMenuInflater().inflate(R.menu.post_menu,popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.report:
-                                final EditText et = new EditText(context);
-                                final AlertDialog.Builder alt_bld = new AlertDialog.Builder(context);
-                                alt_bld.setTitle("신고")
-                                        .setMessage("신고 사유를 입력해주세요")
-                                        .setCancelable(true)
-                                        .setView(et)
-                                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
 
-                                            }
-                                        })
-                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                String value = et.getText().toString();
-                                                Long time = new Date().getTime();
-                                                //신고한 정보 저장
-                                                database.getReference().child("reports")
-                                                        .child(model.getPostedBy()) //신고 당한 유저
-                                                        .child(model.getPostId())       //신고 당한 포스트
-                                                        .child(auth.getUid())           // 신고자
-                                                        .child(time.toString())         // 신고한 날짜
-                                                        .setValue(value);               // 신고 사유
-                                                // 신고한 포스트를 숨김 목록에 추가
+                AlertDialog alertbox = new AlertDialog.Builder(context)
+                        .setMessage(R.string.delete_post)
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        }).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                database.getReference().child("posts").child(model.getPostId()).removeValue();
+                                try {
+                                    storage.getReference().child("posts").child(""+model.getPostedAt()).delete();
+                                    notifyItemRemoved(holder.getAdapterPosition());
+                                    Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+                                } catch (Exception e){
+
+                                }
 
 
-                                                //신고당한 횟수 추가
 
-//                                                database.getReference().child("reports").child(model.getPostedBy()).child(model.getPostId()).setValue(value);
-                                                // 신고누적 수, 신고자, 신고 사유
-
-                                            }
-
-                                        });
-
-                                AlertDialog alert = alt_bld.create();
-
-                                alert.show();
-                                break;
-                            case R.id.hide:
-                                break;
-                            case R.id.delete:
-                                AlertDialog alertbox = new AlertDialog.Builder(context)
-                                        .setMessage("Do you want to delete this post?")
-                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                return;
-                                            }
-                                        }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                database.getReference().child("posts").child(model.getPostId()).removeValue();
-                                                try {
-                                                    storage.getReference().child("posts").child(""+model.getPostedAt()).delete();
-                                                } catch (Exception e){
-
-                                                }
-
-
-                                                notifyItemRemoved(holder.getAdapterPosition());
-                                            }
-                                        }).show();
-                                break;
-                            default:
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                // 글쓴이와 로그인유저가 동일하면 삭제하기 버튼, 다르면 신고하기 버튼이 표시
-                if (auth.getUid().equals( model.getPostedBy())) {
-                    popupMenu.getMenu().getItem(0).setVisible(false);
-                    popupMenu.getMenu().getItem(1).setVisible(false);
-                } else  {
-                    popupMenu.getMenu().getItem(2).setVisible(false);
-                }
-                popupMenu.show();//Popup Menu 보이기
+                            }
+                        }).show();
 
             }
         });
+
+
+
+        // 신고 버튼
+        holder.binding.btnSiren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText et = new EditText(context);
+                final AlertDialog.Builder alt_bld = new AlertDialog.Builder(context);
+                alt_bld.setTitle(R.string.report)
+                        .setMessage(R.string.reported_for)
+                        .setCancelable(true)
+                        .setView(et)
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String value = et.getText().toString();
+                                Long time = new Date().getTime();
+                                //신고한 정보 저장
+                                try{
+                                    database.getReference().child("reports")
+                                        .child(model.getPostedBy()) //신고 당한 유저
+                                        .child(model.getPostId())       //신고 당한 포스트
+                                        .child(auth.getUid())           // 신고자
+                                        .child(time.toString())         // 신고한 날짜
+                                        .setValue(value);               // 신고 사유
+                                    Toast.makeText(context, R.string.report_success, Toast.LENGTH_SHORT).show();
+                                } catch (Exception e){
+
+                                }
+
+                                // 신고한 포스트를 숨김 목록에 추가
+
+
+                                //신고당한 횟수 추가
+
+//                                                database.getReference().child("reports").child(model.getPostedBy()).child(model.getPostId()).setValue(value);
+                                // 신고누적 수, 신고자, 신고 사유
+
+                            }
+
+                        });
+
+                AlertDialog alert = alt_bld.create();
+
+                alert.show();
+//                PopupMenu popupMenu = new PopupMenu(context,v);
+//                popupMenu.getMenuInflater().inflate(R.menu.post_menu,popupMenu.getMenu());
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        switch (item.getItemId()){
+//                            case R.id.report:
+//
+//
+//
+//                                break;
+//                            case R.id.hide:
+//                                break;
+//                            case R.id.delete:
+//
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                        return false;
+//                    }
+//                });
+//
+//
+//                popupMenu.show();//Popup Menu 보이기
+            }
+        });
+        // 글쓴이와 로그인유저가 동일하면 삭제하기 버튼, 다르면 신고하기 버튼이 표시
+        if (auth.getUid().equals( model.getPostedBy()) ) {
+            // 신고버튼 안보이게
+            holder.binding.btnSiren.setVisibility(View.GONE);
+        } else  {
+            // 삭제버튼 안보이게
+            holder.binding.btnDelete.setVisibility(View.GONE);
+        }
 
 
         // 커멘트 Activity로 이동하는 버튼
@@ -271,16 +295,19 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             @Override
             public void onClick(View v) {
                 onStarClicked(database.getReference().child("posts").child(model.getPostId()));
-                if (likeState) {
-                    Toast.makeText(context, "눌려있는 경우 ", Toast.LENGTH_SHORT).show();
+                if (likeState[0] == 1) {
+//                    Toast.makeText(context, "눌려있는 경우 " + likeState[0], Toast.LENGTH_SHORT).show();
                     holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like,0,0,0);
-                    holder.binding.like.setText((model.getPostLike()-1)+"");
-                    likeState = false;
+                    postLike[0] = postLike[0] - 1;
+
+                    holder.binding.like.setText((postLike[0])+"");
+                    likeState[0] = 0;
                 } else {
                     holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_2,0,0,0);
-                    Toast.makeText(context, "안 눌려있는 경우 ", Toast.LENGTH_SHORT).show();
-                    holder.binding.like.setText((model.getPostLike()+1)+"");
-                    likeState = true;
+//                    Toast.makeText(context, "안 눌려있는 경우 " + likeState[0], Toast.LENGTH_SHORT).show();
+                    postLike[0] = postLike[0] + 1;
+                    holder.binding.like.setText((postLike[0])+"");
+                    likeState[0] = 1;
                 }
             }
         });

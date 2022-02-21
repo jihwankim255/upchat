@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment {
 
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setTitle("Story Uploading");
-        dialog.setMessage("Please wait...");
+        dialog.setMessage(getString(R.string.wait));   // 이부분 뭐가바꼈는데 확인
         dialog.setCancelable(false);
 
         notificationProfile = view.findViewById(R.id.notificationProfile);
@@ -326,7 +326,7 @@ public class HomeFragment extends Fragment {
                 oldestPostId = oldPost_get.get(0);
                 dashboardRV.setAdapter(postAdapter);
                 dashboardRV.hideShimmerAdapter();
-//                postAdapter.notifyDataSetChanged();
+                postAdapter.notifyDataSetChanged();
             }
 
 

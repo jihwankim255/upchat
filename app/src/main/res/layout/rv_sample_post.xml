@@ -53,20 +53,29 @@
         android:layout_height="80dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/notificationProfile"
-        app:layout_constraintEnd_toStartOf="@id/btn_more"/>
-
-
-
+        app:layout_constraintEnd_toStartOf="@id/btn_siren"/>
 
     <ImageView
-        android:id="@+id/btn_more"
+        android:id="@+id/btn_delete"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginEnd="8dp"
+        app:tint="@color/darkGrey"
         app:layout_constraintBottom_toBottomOf="@+id/notificationProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/notificationProfile"
-        app:srcCompat="@drawable/ic_more" />
+        app:srcCompat="@drawable/ic_delete" />ㅇ
+
+    <ImageView
+        android:id="@+id/btn_siren"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        app:tint="@color/darkGrey"
+        app:layout_constraintBottom_toBottomOf="@+id/notificationProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/notificationProfile"
+        app:srcCompat="@drawable/ic_siren" />
 
 <!--    profile1-->
     <com.makeramen.roundedimageview.RoundedImageView

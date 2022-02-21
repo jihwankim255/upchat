@@ -16,7 +16,10 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_bottom_nav_chat.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_bottomnav_chat.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_chat.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_comment.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_delete.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_grey_search_24.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_home.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_image.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_launch_foreground2.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_launcher_background.xml" value="0.38229166666666664" />
@@ -25,10 +28,13 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_like_2.xml" value="0.24791666666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_logout.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_magnifier.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_more.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_notification.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_phone_call.xml" value="0.1859375" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_profile.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_send.xml" value="0.24791666666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_settings.xml" value="0.3416666666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_siren.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_speachbubble.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/ic_speachbubble2.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable/input_text_bg.xml" value="0.24375" />
