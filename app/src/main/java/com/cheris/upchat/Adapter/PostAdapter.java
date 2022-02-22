@@ -246,14 +246,19 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
 //                popupMenu.show();//Popup Menu 보이기
             }
         });
-        // 글쓴이와 로그인유저가 동일하면 삭제하기 버튼, 다르면 신고하기 버튼이 표시
-        if (auth.getUid().equals( model.getPostedBy()) ) {
-            // 신고버튼 안보이게
-            holder.binding.btnSiren.setVisibility(View.GONE);
-        } else  {
-            // 삭제버튼 안보이게
-            holder.binding.btnDelete.setVisibility(View.GONE);
+        try {
+            // 글쓴이와 로그인유저가 동일하면 삭제하기 버튼, 다르면 신고하기 버튼이 표시
+            if (auth.getUid().equals( model.getPostedBy()) ) {
+                // 신고버튼 안보이게
+                holder.binding.btnSiren.setVisibility(View.GONE);
+            } else  {
+                // 삭제버튼 안보이게
+                holder.binding.btnDelete.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
 
 
         // 커멘트 Activity로 이동하는 버튼
