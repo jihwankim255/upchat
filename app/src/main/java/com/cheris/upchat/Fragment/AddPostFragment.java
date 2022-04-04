@@ -88,12 +88,17 @@ public class AddPostFragment extends Fragment {
                 if (snapshot.exists()) {
                     User user = snapshot.getValue(User.class);
 //                    Picasso.get()
-                    Glide.with(getActivity())
-                            .load(user.getProfile())
-                            .placeholder(R.drawable.placeholder)
-                            .into(binding.notificationProfile);
-                    binding.name.setText(user.getName());
-                    binding.profession.setText(user.getProfession());
+                    try {
+                        Glide.with(getActivity())
+                                .load(user.getProfile())
+                                .placeholder(R.drawable.placeholder)
+                                .into(binding.notificationProfile);
+                        binding.name.setText(user.getName());
+                        binding.profession.setText(user.getProfession());
+                    } catch (Exception e) {
+
+                    }
+
                 }
             }
 
@@ -160,10 +165,11 @@ public class AddPostFragment extends Fragment {
                         @Override
                         public void onSuccess(Void unused) {
                             dialog.dismiss();
-                            Toast.makeText(getContext(), "Posted Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.post_success_message, Toast.LENGTH_SHORT).show();
                             post.setPostedBy(null);
                             post.setPostDescription("");
                             post.setPostedAt(0);
+                            binding.postDescription.setText("");
                         }
                     });
                 } else {  // 사진 업로드를 했을 때
@@ -178,19 +184,19 @@ public class AddPostFragment extends Fragment {
                                     post.setPostedBy(FirebaseAuth.getInstance().getUid());
                                     post.setPostDescription(binding.postDescription.getText().toString());
                                     post.setPostedAt(postDate);
-
                                     database.getReference().child("posts")
                                             .push()
                                             .setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
                                             dialog.dismiss();
-                                            Toast.makeText(getContext(), "Posted Successfully", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), R.string.post_success_message, Toast.LENGTH_SHORT).show();
                                             post.setPostImage(null);
                                             post.setPostedBy(null);
                                             post.setPostDescription("");
                                             post.setPostedAt(0);
-                                            binding.postBtn.setVisibility(View.GONE);
+                                            binding.postImage.setVisibility(View.GONE);
+                                            binding.postDescription.setText("");
                                         }
                                     });
                                 }
@@ -198,7 +204,8 @@ public class AddPostFragment extends Fragment {
                         }
                     });
                 }
-                binding.postDescription.setText(""); // 공백으로
+                uri = null;
+//                binding.postDescription.setText(""); // 공백으로
                 ((MainActivity)getActivity()).afterAddPostEvent();
             }
         });
@@ -209,18 +216,20 @@ public class AddPostFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data!=null) {
-            if (data.getData() != null){
-                uri = data.getData();
-                binding.postImage.setImageURI(uri);
-                binding.postImage.setVisibility(View.VISIBLE);
+        try {
+            if(data!=null) {
+                if (data.getData() != null){
+                    uri = data.getData();
 
-                binding.postBtn.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.follow_btn_bg));
-                binding.postBtn.setTextColor(getContext().getResources().getColor(R.color.white));
-                binding.postBtn.setEnabled(true);
+                    binding.postImage.setImageURI(uri);
+                    binding.postImage.setVisibility(View.VISIBLE);
 
+                }
             }
+        } catch (Exception e) {
+
         }
+
 
     }
 }
