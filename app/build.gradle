@@ -24,8 +24,8 @@ android {
         applicationId "com.cheris.upchat"
         minSdk 21
         targetSdk 31
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 6
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         targetSdkVersion 31
@@ -103,9 +103,11 @@ dependencies {
 // SwipeRefreshLayout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-// Billing client
-    implementation "com.android.billingclinet:billing:4.1.0"
+// BillingClient
+    implementation "com.android.billingclient:billing:4.0.0"
 
+// Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
 
 }
 apply plugin: 'com.google.gms.google-services'
