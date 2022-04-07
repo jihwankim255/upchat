@@ -29,4 +29,6 @@
     <string name="delete_success">"The post has been deleted."</string>
     <string name="report_success">The post has been reported</string>
     <string name="post_success_message">Posted Successfully!</string>
+    <string name="secondary_text">price</string>
+    <string name="supporting_text">Description</string>
 </resources>

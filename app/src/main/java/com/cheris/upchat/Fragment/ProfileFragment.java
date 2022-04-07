@@ -21,6 +21,7 @@ import com.cheris.upchat.AdminActivity;
 import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
+import com.cheris.upchat.StoreActivity;
 import com.cheris.upchat.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -223,6 +224,14 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 request_code = 22;
                 galleryLauncher.launch("image/*");
+            }
+        });
+        binding.store.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), StoreActivity.class);
+
+                startActivity(intent);
             }
         });
 
