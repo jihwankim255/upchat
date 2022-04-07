@@ -29,4 +29,6 @@
     <string name="delete_success">글이 삭제되었습니다</string>
     <string name="report_success">글을 신고하였습니다</string>
     <string name="post_success_message">글을 작성하였습니다</string>
+    <string name="secondary_text">price</string>
+    <string name="supporting_text">Description</string>
 </resources>
