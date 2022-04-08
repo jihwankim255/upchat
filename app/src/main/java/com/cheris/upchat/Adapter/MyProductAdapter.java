@@ -1,5 +1,6 @@
 package com.cheris.upchat.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.MyVi
 
     @Override
     public int getItemCount() {
+        Log.d("aabbcc",""+skuDetailsList.size());
         return skuDetailsList.size();
     }
 
