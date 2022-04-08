@@ -85,12 +85,9 @@ public class PurchaseItemActivity extends AppCompatActivity implements Purchases
     }
 
     private void setupBillingClient() {
-        listener = new ConsumeResponseListener() {
-            @Override
-            public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    Toast.makeText(PurchaseItemActivity.this, "Consume OK!", Toast.LENGTH_SHORT).show();
-                }
+        listener = (ConsumeResponseListener) (billingResult, s) -> {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                Toast.makeText(PurchaseItemActivity.this, "Consume OK!", Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -135,6 +132,12 @@ public class PurchaseItemActivity extends AppCompatActivity implements Purchases
 
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
-
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
+            handleItemAlreadyPurchase(list);
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Toast.makeText(this, "User has been cancelled", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error: " + billingResult.getResponseCode(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
