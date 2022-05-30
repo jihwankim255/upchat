@@ -5,6 +5,11 @@ plugins {
 }
 
 android {
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
     signingConfigs {
         debug {
             storeFile file('C:\\Users\\user\\keystores\\android_keystore.jks')
@@ -24,8 +29,8 @@ android {
         applicationId "com.cheris.upchat"
         minSdk 21
         targetSdk 31
-        versionCode 7
-        versionName "1.0.6  "
+        versionCode 8
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         targetSdkVersion 31
@@ -33,7 +38,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
@@ -104,10 +109,15 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
 // BillingClient
-    implementation "com.android.billingclient:billing:4.0.0"
+    def billing_version = '4.0.0'
+    implementation "com.android.billingclient:billing:$billing_version"
 
 // Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
+
+// volley
+    def volley_version = "1.2.0"
+    implementation "com.android.volley:volley:$volley_version"
 
 }
 apply plugin: 'com.google.gms.google-services'
