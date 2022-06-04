@@ -179,7 +179,7 @@ public class HomeFragment extends Fragment {
         dashboardRV.setNestedScrollingEnabled(false);
 
         loadData();
-
+        // 아래로 내릴 때
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -229,7 +229,7 @@ public class HomeFragment extends Fragment {
 //                }
 //            }
 //        });
-
+        // 화면을 위로 올렸을 때 새로고침
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -308,8 +308,8 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
-
-    public void loadData() { //아래로 내렸을 때
+    //아래로 내렸을 때
+    public void loadData() {
         PostAdapter postAdapter = new PostAdapter(postList,getContext());
             database.getReference().child("posts").limitToLast(initial_num).addListenerForSingleValueEvent(new ValueEventListener() {
             //        database.getReference().child("posts").addValueEventListener(new ValueEventListener() {
@@ -337,6 +337,7 @@ public class HomeFragment extends Fragment {
         });
 
     }
+    //  Add post 한 후
     public void loadData2() { //아래로 내렸을 때
         PostAdapter postAdapter = new PostAdapter(postList,getContext());
         database.getReference().child("posts").limitToLast(initial_num).addListenerForSingleValueEvent(new ValueEventListener() {

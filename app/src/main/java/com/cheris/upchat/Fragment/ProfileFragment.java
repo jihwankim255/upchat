@@ -3,6 +3,7 @@ package com.cheris.upchat.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,8 @@ public class ProfileFragment extends Fragment {
 //        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 //        recyclerView = view.findViewById(R.id.friendRV);
+
+        // 어드민 전용 버튼 생성
         database.getReference().child("Users").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -93,7 +96,7 @@ public class ProfileFragment extends Fragment {
         });
 
         list = new ArrayList<>();
-//
+
 //        list.add(new Follow(R.drawable.profile));
 
         FollowersAdapter adapter = new FollowersAdapter(list,getContext());
@@ -110,16 +113,22 @@ public class ProfileFragment extends Fragment {
                 if (snapshot.exists()){
                     User user = snapshot.getValue(User.class);
 //                    Picasso.get()
+                    // 커버사진
                     Glide.with(getActivity())
                             .load(user.getCoverPhoto())
                             .placeholder(R.drawable.placeholder)
                             .into(binding.coverPhoto);
 //                    Picasso.get()
+                    // 프로필사진
                     Glide.with(getActivity())
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
                             .into(binding.profileImage);
-
+//                    try {
+                    binding.tvPoint.setText(user.getPoints() + " 포인트");
+//                    } catch (Exception e) {
+//                        Log.d("point0", String.valueOf(e));
+//                    }
 
                     binding.userName.setText(user.getName());
                     binding.profession.setText(user.getProfession());

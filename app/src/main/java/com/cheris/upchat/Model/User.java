@@ -9,6 +9,9 @@ public class User {
     private String lastMessage;
     private String blockUser;
     private String userLevel;
+    private int points;
+
+
 
     public User() {
 
@@ -94,6 +97,14 @@ public class User {
 
     public void setFollowerCount(int followerCount) {
         this.followerCount = followerCount;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public String getBlockUser() {
