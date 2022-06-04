@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,14 +31,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class StoreActivity extends AppCompatActivity {
+
     BillingClient billingclinet;
+    FirebaseAuth auth;
+    FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +133,8 @@ public class StoreActivity extends AppCompatActivity {
                                             @Override
                                             public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
                                                 if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                                    Toast.makeText(activity, "Consumed!", Toast.LENGTH_LONG).show();
+//                                                    Toast.makeText(activity, "Consumed!", Toast.LENGTH_LONG).show();
+
                                                 }
                                             }
                                         }
@@ -146,7 +155,7 @@ public class StoreActivity extends AppCompatActivity {
 //                                );
                             }
                         } catch (Exception err) {
-                            Toast.makeText(activity, "Not Consumed! " + err, Toast.LENGTH_LONG).show();
+//                            Toast.makeText(activity, "Not Consumed! " + err, Toast.LENGTH_LONG).show();
 
                         }
 
@@ -166,12 +175,13 @@ public class StoreActivity extends AppCompatActivity {
 
     private void getProductDetails() {
         List<String> productIds = new ArrayList<>();
-        productIds.add("100point");
-        productIds.add("300point");
-        productIds.add("500point");
-        productIds.add("1000point");
-        productIds.add("1200point");
-        productIds.add("30000point");
+        productIds.add(0,"100point");
+        productIds.add(0,"300point");
+        productIds.add(0,"500point");
+        productIds.add(0,"1000point");
+        productIds.add(0,"1200point");
+        productIds.add(0,"30000point");
+        Log.d("preproductId", String.valueOf(productIds));
         SkuDetailsParams getProductDetailsQuery = SkuDetailsParams
                 .newBuilder()
                 .setSkusList(productIds)
@@ -185,6 +195,7 @@ public class StoreActivity extends AppCompatActivity {
                     public void onSkuDetailsResponse(@NonNull BillingResult billingResult, @Nullable List<SkuDetails> list) {
                         if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK &&
                         list != null) {
+
                             TextView tvPoint100 = findViewById(R.id.point100);
                             Button btnPoint100 = findViewById(R.id.buy100point);
                             TextView tvPoint300 = findViewById(R.id.point300);
@@ -197,7 +208,19 @@ public class StoreActivity extends AppCompatActivity {
                             Button btnPoint1200 = findViewById(R.id.buy1200point);
                             TextView tvPoint30000 = findViewById(R.id.point30000);
                             Button btnPoint30000 = findViewById(R.id.buy30000point);
-                            SkuDetails itemInfo1 = list.get(0);
+                            SkuDetails itemInfo0 = list.get(0);
+                            SkuDetails itemInfo1 = list.get(1);
+                            SkuDetails itemInfo2 = list.get(2);
+                            SkuDetails itemInfo3 = list.get(3);
+                            SkuDetails itemInfo4 = list.get(4);
+                            SkuDetails itemInfo5 = list.get(5);
+                            Log.d("listGetAll", String.valueOf(list));
+                            Log.d("listGet0", String.valueOf(list.get(0)));
+                            Log.d("listGet1", String.valueOf(list.get(1)));
+                            Log.d("listGet2", String.valueOf(list.get(2)));
+                            Log.d("listGet3", String.valueOf(list.get(3)));
+                            Log.d("listGet4", String.valueOf(list.get(4)));
+                            Log.d("listGet5", String.valueOf(list.get(5)));
 //                            tvPoint100.setText(itemInfo.getTitle());
 //                            btnPoint100.setText(itemInfo.getPrice());
                             btnPoint100.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +229,51 @@ public class StoreActivity extends AppCompatActivity {
                                     billingclinet.launchBillingFlow(
                                             activity,
                                             BillingFlowParams.newBuilder().setSkuDetails(itemInfo1).build()
+                                    );
+                                }
+                            });
+                            btnPoint300.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    billingclinet.launchBillingFlow(
+                                            activity,
+                                            BillingFlowParams.newBuilder().setSkuDetails(itemInfo4).build()
+                                    );
+                                }
+                            });
+                            btnPoint500.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    billingclinet.launchBillingFlow(
+                                            activity,
+                                            BillingFlowParams.newBuilder().setSkuDetails(itemInfo5).build()
+                                    );
+                                }
+                            });
+                            btnPoint1000.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    billingclinet.launchBillingFlow(
+                                            activity,
+                                            BillingFlowParams.newBuilder().setSkuDetails(itemInfo0).build()
+                                    );
+                                }
+                            });
+                            btnPoint1200.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    billingclinet.launchBillingFlow(
+                                            activity,
+                                            BillingFlowParams.newBuilder().setSkuDetails(itemInfo2).build()
+                                    );
+                                }
+                            });
+                            btnPoint30000.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    billingclinet.launchBillingFlow(
+                                            activity,
+                                            BillingFlowParams.newBuilder().setSkuDetails(itemInfo3).build()
                                     );
                                 }
                             });
