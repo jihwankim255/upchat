@@ -31,8 +31,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.cheris.upchat.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import org.json.JSONObject;
@@ -51,6 +56,9 @@ public class StoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
         billingclinet = BillingClient.newBuilder(this)
                 .enablePendingPurchases()
                 .setListener(new PurchasesUpdatedListener() {
@@ -61,6 +69,9 @@ public class StoreActivity extends AppCompatActivity {
                                 if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED &&
                                 !purchase.isAcknowledged()) {
 //                                    verify the purchase using a backend server
+                                    Log.d("getSkus!", String.valueOf(purchase.getSkus()));
+                                    Log.d("getSkus!", String.valueOf(String.valueOf(purchase.getSkus()).equals("[300point]")));
+
                                     verifyPurchase(purchase);
 
                                 }
@@ -83,7 +94,8 @@ public class StoreActivity extends AppCompatActivity {
                             for(Purchase purchase: list) {
                                 if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED &&
                                 !purchase.isAcknowledged()) {
-                                    verifyPurchase(purchase);
+//                                    verifyPurchase(purchase);
+                                    Log.d("resumed","resumed");
                                 }
                             }
                         }
@@ -125,6 +137,12 @@ public class StoreActivity extends AppCompatActivity {
 //                        여러번 구매하게 하기위해
                         try {
                             JSONObject purchaseInfoFromServer = new JSONObject(response);
+                            Log.d("FromServer", String.valueOf(purchaseInfoFromServer));
+                            Log.d("FromServergetBoolean", String.valueOf(purchaseInfoFromServer.getBoolean("isValid")));
+                            Log.d("FromServerget", String.valueOf(purchaseInfoFromServer.get("isValid")));
+                            Log.d("FromServergetString", purchaseInfoFromServer.getString("isValid"));
+                            Log.d("FromServergetStringId", purchaseInfoFromServer.getString("orderId"));
+
                             if(purchaseInfoFromServer.getBoolean("isValid")) {
                                 ConsumeParams consumeParams = ConsumeParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
                                 billingclinet.consumeAsync(
@@ -134,6 +152,39 @@ public class StoreActivity extends AppCompatActivity {
                                             public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
                                                 if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
 //                                                    Toast.makeText(activity, "Consumed!", Toast.LENGTH_LONG).show();
+                                                    // 이부분에 데이터입력
+                                                    Log.d("getpoints", String.valueOf(database.getReference().child("Users").child(auth.getUid()).child("points").get()));
+
+
+                                                    database.getReference().child("Users")
+                                                            .child(auth.getUid())
+                                                            .child("points2").setValue(100);
+//                                                    database.getReference().child("Users")
+//                                                            .child(auth.getUid())
+//                                                            .child("points").
+
+
+                                                    database.getReference().child("Users")
+                                                            .child(auth.getUid())
+                                                            .child("points").addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                            User user = snapshot.getValue(User.class);
+                                                            Log.d("snapshot", String.valueOf(user));
+                                                            Log.d("snapshot", String.valueOf(user.getPoints()));
+                                                            database.getReference().child("Users")
+                                                                    .child(auth.getUid())
+                                                                    .child("points").setValue(user.getPoints()+100);
+
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
 
                                                 }
                                             }
@@ -154,8 +205,19 @@ public class StoreActivity extends AppCompatActivity {
 //                                        }
 //                                );
                             }
-                        } catch (Exception err) {
+//                            else if ( purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
+//                                Toast.makeText(StoreActivity.this, "Pending!", Toast.LENGTH_SHORT).show();
+//                                Log.d("Pending!", "Pending!");
+//                            } else if(purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE){
+//                                Toast.makeText(StoreActivity.this, "UNSPECIFIED_STATE", Toast.LENGTH_SHORT).show();
+//                                Log.d("UNSPECIFIED_STATE!", "UNSPECIFIED_STATE!");
+//                            } else {
+//                                Log.d("inavlid!", "inavlid!");
+//                            }
+
+                            } catch (Exception err) {
 //                            Toast.makeText(activity, "Not Consumed! " + err, Toast.LENGTH_LONG).show();
+                            Log.d("Exception", "Exception: " + err);
 
                         }
 
@@ -164,6 +226,7 @@ public class StoreActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.d("volleyError","volleyError");
 
                     }
                 }
