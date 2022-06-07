@@ -3,8 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/82109/AndroidStudioProjects/Upchat/app/src/main/res/layout/fragment_home.xml" value="0.1527777777777778" />
-        <entry key="..\:/Users/82109/AndroidStudioProjects/Upchat/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable-v24/ic_launch_foreground2.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24791666666666667" />
@@ -90,14 +88,16 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/menu/post_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/drawable/ic_profile.xml" value="0.2365" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_purchase_item.xml" value="0.23125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_purchasekt.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_store.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_storekt.xml" value="0.15517241379310345" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/rv_sample_follower.xml" value="0.23020833333333332" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
