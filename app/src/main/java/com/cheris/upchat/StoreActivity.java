@@ -153,29 +153,61 @@ public class StoreActivity extends AppCompatActivity {
                                                 if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
 //                                                    Toast.makeText(activity, "Consumed!", Toast.LENGTH_LONG).show();
                                                     // 이부분에 데이터입력
-                                                    Log.d("getpoints", String.valueOf(database.getReference().child("Users").child(auth.getUid()).child("points").get()));
-
-
                                                     database.getReference().child("Users")
                                                             .child(auth.getUid())
-                                                            .child("points2").setValue(100);
-//                                                    database.getReference().child("Users")
-//                                                            .child(auth.getUid())
-//                                                            .child("points").
-
-
-                                                    database.getReference().child("Users")
-                                                            .child(auth.getUid())
-                                                            .child("points").addValueEventListener(new ValueEventListener() {
+                                                            .addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            try {
+                                                                if (snapshot.exists()){
+                                                                    User user = snapshot.getValue(User.class);
+//                                                                Log.d("snapshot", String.valueOf(user.getPoints()));
+                                                                    Log.d("plusGetSkus", String.valueOf(purchase.getSkus().get(0)));
+                                                                    String sku = purchase.getSkus().get(0);
+                                                                    switch (sku) {
+                                                                        case "100point":
+                                                                            database.getReference().child("Users")
+                                                                                    .child(auth.getUid())
+                                                                                    .child("points").setValue(user.getPoints()+ 100);
+                                                                            break;
 
-                                                            User user = snapshot.getValue(User.class);
-                                                            Log.d("snapshot", String.valueOf(user));
-                                                            Log.d("snapshot", String.valueOf(user.getPoints()));
-                                                            database.getReference().child("Users")
-                                                                    .child(auth.getUid())
-                                                                    .child("points").setValue(user.getPoints()+100);
+                                                                        case "300point":
+                                                                            database.getReference().child("Users")
+                                                                                    .child(auth.getUid())
+                                                                                    .child("points").setValue(user.getPoints()+ 300);
+                                                                            break;
+                                                                        case "500point":
+                                                                            database.getReference().child("Users")
+                                                                                    .child(auth.getUid())
+                                                                                    .child("points").setValue(user.getPoints()+ 500);
+                                                                            break;
+                                                                        case "1000point":
+                                                                            database.getReference().child("Users")
+                                                                                    .child(auth.getUid())
+                                                                                    .child("points").setValue(user.getPoints()+ 1000);
+                                                                            break;
+                                                                        case "1200point":
+                                                                            database.getReference().child("Users")
+                                                                                    .child(auth.getUid())
+                                                                                    .child("points").setValue(user.getPoints()+ 1200);
+                                                                            break;
+                                                                        case "30000point":
+                                                                            database.getReference().child("Users")
+                                                                                    .child(auth.getUid())
+                                                                                    .child("points").setValue(user.getPoints()+ 30000);
+                                                                            break;
+
+
+                                                                    }
+
+                                                                }
+                                                            } catch (Exception err) {
+                                                                Toast.makeText(StoreActivity.this, ""+err, Toast.LENGTH_SHORT).show();
+                                                                database.getReference().child("Users").child(auth.getUid()).child("errorMessage").setValue(""+err);
+                                                            }
+
+
+
 
 
                                                         }

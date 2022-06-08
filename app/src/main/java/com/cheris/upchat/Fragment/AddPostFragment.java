@@ -107,7 +107,7 @@ public class AddPostFragment extends Fragment {
 
             }
         });
-
+        // 글 작성 부분
         binding.postDescription.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

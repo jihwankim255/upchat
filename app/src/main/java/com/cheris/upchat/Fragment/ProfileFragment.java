@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.cheris.upchat.Adapter.FollowersAdapter;
 import com.cheris.upchat.AdminActivity;
+import com.cheris.upchat.GlideApp;
 import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
@@ -125,7 +126,7 @@ public class ProfileFragment extends Fragment {
                             .placeholder(R.drawable.placeholder)
                             .into(binding.profileImage);
 //                    try {
-                    binding.tvPoint.setText(user.getPoints() + " 포인트");
+
 //                    } catch (Exception e) {
 //                        Log.d("point0", String.valueOf(e));
 //                    }
@@ -141,6 +142,25 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+        // 포인트 실시간 갱신
+        database.getReference().child("Users").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    User user = snapshot.getValue(User.class);
+
+                    binding.tvPoint.setText(user.getPoints() + " 포인트");
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         //followers 목록에서 가져와서 recyclerview로 보여주는 부분
         database.getReference().child("Users")
                 .child(auth.getUid())
