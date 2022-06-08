@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.cheris.upchat.Adapter.PostAdapter;
+import com.cheris.upchat.GlideApp;
 import com.cheris.upchat.Model.Post;
 import com.cheris.upchat.Model.Story;
 import com.cheris.upchat.Model.User;

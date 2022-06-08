@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,14 +153,29 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                         }).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                database.getReference().child("posts").child(model.getPostId()).removeValue();
                                 try {
-                                    storage.getReference().child("posts").child(""+model.getPostedAt()).delete();
-                                    notifyItemRemoved(holder.getAdapterPosition());
-                                    Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                                } catch (Exception e){
+                                    // postImage가 있을 경우
+                                    if (model.getPostImage() != null){
+                                        Log.d("deletedpostId", model.getPostId());
+                                        database.getReference().child("posts").child(model.getPostId()).removeValue();
+                                        storage.getReference().child("posts").child(""+model.getPostedBy()).child(""+model.getPostedAt()).delete();
+                                        notifyItemRemoved(holder.getAdapterPosition());
+                                        Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
 
+                                    } else{  // postImage가 없을 경우
+                                        Log.d("deletedpostId", model.getPostId());
+                                        database.getReference().child("posts").child(model.getPostId()).removeValue();
+                                        notifyItemRemoved(holder.getAdapterPosition());
+                                        Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception err) {
+                                    Toast.makeText(context, ""+err, Toast.LENGTH_SHORT).show();
+                                    database.getReference().child("Users").child(auth.getUid()).child("error").setValue(""+err);
                                 }
+
+
+
+
 
 
 

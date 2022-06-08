@@ -10,8 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cheris.upchat.GlideApp;
 import com.cheris.upchat.Model.Comment;
 import com.cheris.upchat.Model.User;
+import com.cheris.upchat.MyGlideApp;
 import com.cheris.upchat.R;
 //import com.cheris.upchat.databinding.CommentSampleBinding;
 import com.cheris.upchat.databinding.RvSampleCommentBinding;
@@ -21,8 +23,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 
+
+import java.util.ArrayList;
+// 글 클릭시 댓글
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.viewHolder>{
 
     Context context;
