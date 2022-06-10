@@ -77,15 +77,20 @@ public class ProfileFragment extends Fragment {
 //        recyclerView = view.findViewById(R.id.friendRV);
 
         // 어드민 전용 버튼 생성
+
         database.getReference().child("Users").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     User user = snapshot.getValue(User.class);
-
-                    if (user.getUserLevel()!=null && user.getUserLevel().equals("admin")){
-                        binding.btnAdmin.setVisibility(View.VISIBLE);
+                    try {
+                        if (user.getUserLevel()!=null && user.getUserLevel().equals("admin")){
+                            binding.btnAdmin.setVisibility(View.VISIBLE);
+                        }
+                    } catch (Exception err) {
+                        Toast.makeText(getContext(), ""+err, Toast.LENGTH_SHORT).show();
                     }
+
 
                 }
             }
