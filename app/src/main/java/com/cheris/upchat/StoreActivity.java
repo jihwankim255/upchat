@@ -69,9 +69,8 @@ public class StoreActivity extends AppCompatActivity {
                                 if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED &&
                                 !purchase.isAcknowledged()) {
 //                                    verify the purchase using a backend server
-                                    Log.d("getSkus!", String.valueOf(purchase.getSkus()));
-                                    Log.d("getSkus!", String.valueOf(String.valueOf(purchase.getSkus()).equals("[300point]")));
-
+//                                    Log.d("getSkus!", String.valueOf(purchase.getSkus()));
+//                                    Log.d("getSkus!", String.valueOf(String.valueOf(purchase.getSkus()).equals("[300point]")));
                                     verifyPurchase(purchase);
 
                                 }
@@ -95,7 +94,7 @@ public class StoreActivity extends AppCompatActivity {
                                 if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED &&
                                 !purchase.isAcknowledged()) {
 //                                    verifyPurchase(purchase);
-                                    Log.d("resumed","resumed");
+                                    Log.d("resumed !","resumed");
                                 }
                             }
                         }
@@ -236,16 +235,19 @@ public class StoreActivity extends AppCompatActivity {
 //                                            }
 //                                        }
 //                                );
-                            }
+//                            }
 //                            else if ( purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
 //                                Toast.makeText(StoreActivity.this, "Pending!", Toast.LENGTH_SHORT).show();
 //                                Log.d("Pending!", "Pending!");
 //                            } else if(purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE){
 //                                Toast.makeText(StoreActivity.this, "UNSPECIFIED_STATE", Toast.LENGTH_SHORT).show();
 //                                Log.d("UNSPECIFIED_STATE!", "UNSPECIFIED_STATE!");
-//                            } else {
-//                                Log.d("inavlid!", "inavlid!");
-//                            }
+                                } else {
+                                    Log.d("inavlid!", "inavlid!");
+//                                    Toast.makeText(StoreActivity.this, "결제 승인 에러. 개발자에게 문의해주세요.", Toast.LENGTH_SHORT).show();
+                                    database.getReference().child("Users").child(auth.getUid()).child("error").setValue(purchase.getSkus().get(0));
+
+                                }
 
                             } catch (Exception err) {
 //                            Toast.makeText(activity, "Not Consumed! " + err, Toast.LENGTH_LONG).show();
