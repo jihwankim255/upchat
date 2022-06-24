@@ -88,8 +88,10 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/menu/post_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat-master/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/drawable/ic_default_profile.xml" value="0.2435" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/drawable/ic_profile.xml" value="0.2365" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_admin.xml" value="0.25104166666666666" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_chat_detail.xml" value="0.1953125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_comment.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_login.xml" value="0.2324074074074074" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_login2.xml" value="0.14871794871794872" />
@@ -97,6 +99,7 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_purchasekt.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_store.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/activity_storekt.xml" value="0.15517241379310345" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/rv_sample_chat.xml" value="0.1953125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/rv_sample_follower.xml" value="0.23020833333333332" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/rv_sample_post.xml" value="0.1608974358974359" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Upchat/app/src/main/res/layout/rv_sample_post2.xml" value="0.21979166666666666" />

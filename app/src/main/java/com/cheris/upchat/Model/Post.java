@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Post {
 
-    private String postId;     // 올린 사람 Id
+    private String postId;     //
     private String postImage;  // 올린 이미지
     private String postedBy;    // 올린 사람
     private String postDescription;  // 올린 글

@@ -120,11 +120,16 @@ public class ProfileFragment extends Fragment {
                     User user = snapshot.getValue(User.class);
 //                    Picasso.get()
                     // 커버사진
-                    Glide.with(getActivity())
-                            .load(user.getCoverPhoto())
-                            .placeholder(R.drawable.placeholder)
-                            .into(binding.coverPhoto);
+                    try{
+                        Glide.with(getActivity())
+                                .load(user.getCoverPhoto())
+                                .placeholder(R.drawable.placeholder)
+                                .into(binding.coverPhoto);
 //                    Picasso.get()
+                    } catch (Exception err) {
+                        Log.d("coverErr", String.valueOf(err));
+                    }
+
                     // 프로필사진
                     Glide.with(getActivity())
                             .load(user.getProfile())
