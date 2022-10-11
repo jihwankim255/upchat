@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 public class Post {
 
-    private String postId;     // 올린 사람 Id
+    private String postId;     //
     private String postImage;  // 올린 이미지
     private String postedBy;    // 올린 사람
     private String postDescription;  // 올린 글
     private long postedAt;        // 올린 날짜
-    private int commentCount;     //글에 달린 댓글 수
+    private int commentCount = 0;     //글에 달린 댓글 수
     public int postLike = 0;         //글에 달린 좋아요
     public HashMap<String, Boolean> likes = new HashMap<>();          // 글에 좋아요 한 사람들
 

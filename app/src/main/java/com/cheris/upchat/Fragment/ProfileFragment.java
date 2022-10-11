@@ -3,6 +3,7 @@ package com.cheris.upchat.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.cheris.upchat.Adapter.FollowersAdapter;
 import com.cheris.upchat.AdminActivity;
+import com.cheris.upchat.GlideApp;
 import com.cheris.upchat.Model.Follow;
 import com.cheris.upchat.Model.User;
 import com.cheris.upchat.R;
@@ -73,15 +75,22 @@ public class ProfileFragment extends Fragment {
 //        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 //        recyclerView = view.findViewById(R.id.friendRV);
+
+        // 어드민 전용 버튼 생성
+
         database.getReference().child("Users").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     User user = snapshot.getValue(User.class);
-
-                    if (user.getUserLevel()!=null && user.getUserLevel().equals("admin")){
-                        binding.btnAdmin.setVisibility(View.VISIBLE);
+                    try {
+                        if (user.getUserLevel()!=null && user.getUserLevel().equals("admin")){
+                            binding.btnAdmin.setVisibility(View.VISIBLE);
+                        }
+                    } catch (Exception err) {
+                        Toast.makeText(getContext(), ""+err, Toast.LENGTH_SHORT).show();
                     }
+
 
                 }
             }
@@ -93,7 +102,7 @@ public class ProfileFragment extends Fragment {
         });
 
         list = new ArrayList<>();
-//
+
 //        list.add(new Follow(R.drawable.profile));
 
         FollowersAdapter adapter = new FollowersAdapter(list,getContext());
@@ -110,16 +119,27 @@ public class ProfileFragment extends Fragment {
                 if (snapshot.exists()){
                     User user = snapshot.getValue(User.class);
 //                    Picasso.get()
-                    Glide.with(getActivity())
-                            .load(user.getCoverPhoto())
-                            .placeholder(R.drawable.placeholder)
-                            .into(binding.coverPhoto);
+                    // 커버사진
+                    try{
+                        Glide.with(getActivity())
+                                .load(user.getCoverPhoto())
+                                .placeholder(R.drawable.placeholder)
+                                .into(binding.coverPhoto);
 //                    Picasso.get()
+                    } catch (Exception err) {
+                        Log.d("coverErr", String.valueOf(err));
+                    }
+
+                    // 프로필사진
                     Glide.with(getActivity())
                             .load(user.getProfile())
                             .placeholder(R.drawable.placeholder)
                             .into(binding.profileImage);
+//                    try {
 
+//                    } catch (Exception e) {
+//                        Log.d("point0", String.valueOf(e));
+//                    }
 
                     binding.userName.setText(user.getName());
                     binding.profession.setText(user.getProfession());
@@ -132,6 +152,25 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+        // 포인트 실시간 갱신
+        database.getReference().child("Users").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    User user = snapshot.getValue(User.class);
+
+                    binding.tvPoint.setText(user.getPoints() + " 포인트");
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         //followers 목록에서 가져와서 recyclerview로 보여주는 부분
         database.getReference().child("Users")
                 .child(auth.getUid())

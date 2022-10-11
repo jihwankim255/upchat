@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +102,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
             holder.binding.postDescription.setVisibility(View.VISIBLE);
         }
         //  포스트 작성자의 프로필
-        FirebaseDatabase.getInstance().getReference().child("Users")  //
+        database.getReference().child("Users")  //
                 .child(model.getPostedBy()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -115,18 +116,30 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                     holder.binding.userName.setText(user.getName());
                     holder.binding.bio.setText(user.getProfession());
                 } catch (Exception e) {
-                    Glide.with(context)
-                            .load("https://firebasestorage.googleapis.com/v0/b/upchat-a0789.appspot.com/o/profile_image%2Fdefault_profile.jpg?alt=media&token=e96d4a33-cc51-4f47-9097-b349735488de")
-                            .placeholder(R.drawable.placeholder)
-                            .into(holder.binding.notificationProfile);
-                    holder.binding.userName.setText("(Deleted user)");
-                    holder.binding.userName.setTypeface(holder.binding.userName.getTypeface(), Typeface.NORMAL);
-                    holder.binding.bio.setText("");
-                    holder.binding.postImage.setVisibility(View.GONE);
-                    holder.binding.postDescription.setText("");
-                    holder.binding.like.setClickable(false);
-                    holder.binding.comment.setClickable(false);
-                    holder.binding.share.setClickable(false);
+                    // post작성자의 정보가 없으므로 해당 post 삭제
+                    Log.d("postmodel!", String.valueOf(model.getPostId()));
+                    if (model.getPostImage() != null) {
+                        Log.d("deletedpostId", model.getPostId());
+                        database.getReference().child("posts").child(model.getPostId()).removeValue();
+                        storage.getReference().child("posts").child("" + model.getPostedBy()).child("" + model.getPostedAt()).delete();
+                    } else {
+                        Log.d("deletedpostId", model.getPostId());
+                        database.getReference().child("posts").child(model.getPostId()).removeValue();
+                        notifyItemRemoved(holder.getAdapterPosition());
+                    }
+
+//                    Glide.with(context)
+//                            .load("https://firebasestorage.googleapis.com/v0/b/upchat-a0789.appspot.com/o/profile_image%2Fdefault_profile.jpg?alt=media&token=e96d4a33-cc51-4f47-9097-b349735488de")
+//                            .placeholder(R.drawable.placeholder)
+//                            .into(holder.binding.notificationProfile);
+//                    holder.binding.userName.setText("(Deleted user)");
+//                    holder.binding.userName.setTypeface(holder.binding.userName.getTypeface(), Typeface.NORMAL);
+//                    holder.binding.bio.setText("");
+//                    holder.binding.postImage.setVisibility(View.GONE);
+//                    holder.binding.postDescription.setText("");
+//                    holder.binding.like.setClickable(false);
+//                    holder.binding.comment.setClickable(false);
+//                    holder.binding.share.setClickable(false);
 
                 }
 
@@ -152,14 +165,29 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.viewHolder>{
                         }).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                database.getReference().child("posts").child(model.getPostId()).removeValue();
                                 try {
-                                    storage.getReference().child("posts").child(""+model.getPostedAt()).delete();
-                                    notifyItemRemoved(holder.getAdapterPosition());
-                                    Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                                } catch (Exception e){
+                                    // postImage가 있을 경우
+                                    if (model.getPostImage() != null){
+                                        Log.d("deletedpostId", model.getPostId());
+                                        database.getReference().child("posts").child(model.getPostId()).removeValue();
+                                        storage.getReference().child("posts").child(""+model.getPostedBy()).child(""+model.getPostedAt()).delete();
+                                        notifyItemRemoved(holder.getAdapterPosition());
+                                        Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
 
+                                    } else{  // postImage가 없을 경우
+                                        Log.d("deletedpostId", model.getPostId());
+                                        database.getReference().child("posts").child(model.getPostId()).removeValue();
+                                        notifyItemRemoved(holder.getAdapterPosition());
+                                        Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception err) {
+                                    Toast.makeText(context, ""+err, Toast.LENGTH_SHORT).show();
+                                    database.getReference().child("Users").child(auth.getUid()).child("error").setValue(""+err);
                                 }
+
+
+
+
 
 
 
