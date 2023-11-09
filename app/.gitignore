@@ -1,1 +1,8 @@
 /build
+/debug
+/release
+build.gradle
+google-services.json
+proguard-rules.pro
+/src/androidTest
+/src/test
