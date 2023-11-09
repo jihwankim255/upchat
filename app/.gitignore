@@ -6,3 +6,4 @@ google-services.json
 proguard-rules.pro
 /src/androidTest
 /src/test
+/src/main/ic_launcher-playstore.png
